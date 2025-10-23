@@ -69,6 +69,21 @@ if [[ `uname` =~ "Darwin" ]]; then
   ssh-add -K ~/.ssh/id_ed25519
 fi
 
+# Symlink Claude Code config files
+mkdir -p ~/.claude
+for name in settings.json statusline-command.sh; do
+  target="$HOME/.claude/$name"
+  backup $target
+  symlink $PWD/claude/$name $target
+done
+
+# Symlink Claude Code commands and plans folders
+for name in commands plans; do
+  target="$HOME/.claude/$name"
+  backup $target
+  symlink $PWD/claude/$name $target
+done
+
 # Refresh the current terminal with the newly installed configuration
 exec zsh
 

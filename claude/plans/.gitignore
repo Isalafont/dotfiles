@@ -1,0 +1,6 @@
+# Ignore all plan files
+*.md
+
+# Except the gitkeep file
+!.gitkeep
+!.gitignore
