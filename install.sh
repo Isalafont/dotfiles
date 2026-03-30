@@ -32,6 +32,7 @@ backup ~/.claude/CLAUDE.md      && symlink $DOTFILES/claude/CLAUDE.md      ~/.cl
 backup ~/.claude/settings.json  && symlink $DOTFILES/claude/settings.json  ~/.claude/settings.json
 backup ~/.claude/hooks          && symlink $DOTFILES/claude/hooks           ~/.claude/hooks
 backup ~/.claude/skills         && symlink $DOTFILES/claude/skills          ~/.claude/skills
+backup ~/.claude/commands       && symlink $DOTFILES/claude/commands        ~/.claude/commands
 
 echo "👌 Done!"
 exec zsh
