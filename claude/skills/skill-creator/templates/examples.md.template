@@ -1,0 +1,125 @@
+# Exemples - {{SKILL_TITLE}}
+
+Exemples d'utilisation de {{SKILL_NAME}}.
+
+## Exemple 1 : {{EXAMPLE_1_TITLE}}
+
+### Contexte
+
+{{EXAMPLE_1_CONTEXT}}
+
+### Code
+
+```{{LANGUAGE}}
+{{EXAMPLE_1_CODE}}
+```
+
+### Résultat
+
+```{{OUTPUT_LANGUAGE}}
+{{EXAMPLE_1_OUTPUT}}
+```
+
+### Explications
+
+{{EXAMPLE_1_EXPLANATION}}
+
+---
+
+## Exemple 2 : {{EXAMPLE_2_TITLE}}
+
+### Contexte
+
+{{EXAMPLE_2_CONTEXT}}
+
+### Code
+
+```{{LANGUAGE}}
+{{EXAMPLE_2_CODE}}
+```
+
+### Résultat
+
+```{{OUTPUT_LANGUAGE}}
+{{EXAMPLE_2_OUTPUT}}
+```
+
+### Explications
+
+{{EXAMPLE_2_EXPLANATION}}
+
+---
+
+## Exemple 3 : {{EXAMPLE_3_TITLE}}
+
+### Contexte
+
+{{EXAMPLE_3_CONTEXT}}
+
+### Code
+
+```{{LANGUAGE}}
+{{EXAMPLE_3_CODE}}
+```
+
+### Résultat
+
+```{{OUTPUT_LANGUAGE}}
+{{EXAMPLE_3_OUTPUT}}
+```
+
+### Explications
+
+{{EXAMPLE_3_EXPLANATION}}
+
+---
+
+## Cas d'Usage Avancés
+
+### {{ADVANCED_USE_CASE_1}}
+
+{{ADVANCED_DESCRIPTION_1}}
+
+```{{LANGUAGE}}
+{{ADVANCED_CODE_1}}
+```
+
+### {{ADVANCED_USE_CASE_2}}
+
+{{ADVANCED_DESCRIPTION_2}}
+
+```{{LANGUAGE}}
+{{ADVANCED_CODE_2}}
+```
+
+## Anti-Patterns
+
+### ❌ {{ANTIPATTERN_1_TITLE}}
+
+**Problème :**
+```{{LANGUAGE}}
+{{ANTIPATTERN_1_BAD_CODE}}
+```
+
+**Solution :**
+```{{LANGUAGE}}
+{{ANTIPATTERN_1_GOOD_CODE}}
+```
+
+**Pourquoi :** {{ANTIPATTERN_1_EXPLANATION}}
+
+---
+
+### ❌ {{ANTIPATTERN_2_TITLE}}
+
+**Problème :**
+```{{LANGUAGE}}
+{{ANTIPATTERN_2_BAD_CODE}}
+```
+
+**Solution :**
+```{{LANGUAGE}}
+{{ANTIPATTERN_2_GOOD_CODE}}
+```
+
+**Pourquoi :** {{ANTIPATTERN_2_EXPLANATION}}

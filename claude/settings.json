@@ -1,0 +1,59 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/.ssh/*)",
+      "Read(**/*.pem)",
+      "Read(**/*_rsa)",
+      "Read(**/*_ed25519)",
+      "Read(**/*password*)",
+      "Read(**/*secret*)",
+      "Read(**/*credential*)",
+      "Read(**/.gnupg/*)",
+      "Bash(rm -rf /*)",
+      "Bash(git push --force *)",
+      "Bash(wget *)",
+      "Bash(eval *)",
+      "Bash(python* -c *)",
+      "Bash(ruby -e *)",
+      "Bash(node -e *)"
+    ]
+  },
+  "model": "opusplan",
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "ruby-lsp@claude-plugins-official": true
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/morning_check.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/evening_check.sh",
+            "timeout": 5,
+            "async": true
+          }
+        ]
+      }
+    ]
+  },
+  "extraKnownMarketplaces": {
+    "claude-code-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-code"
+      }
+    }
+  }
+}

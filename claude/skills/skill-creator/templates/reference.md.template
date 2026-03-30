@@ -1,0 +1,77 @@
+# Reference - {{SKILL_TITLE}}
+
+Documentation détaillée pour {{SKILL_NAME}}.
+
+## Vue d'Ensemble
+
+{{DETAILED_OVERVIEW}}
+
+## Configuration
+
+### Prérequis
+
+- {{PREREQUISITE_1}}
+- {{PREREQUISITE_2}}
+- {{PREREQUISITE_3}}
+
+### Installation
+
+```bash
+{{INSTALLATION_COMMANDS}}
+```
+
+## Guide Détaillé
+
+### {{SECTION_1_TITLE}}
+
+{{SECTION_1_CONTENT}}
+
+#### Sous-section
+
+{{SUBSECTION_CONTENT}}
+
+### {{SECTION_2_TITLE}}
+
+{{SECTION_2_CONTENT}}
+
+## API Reference
+
+### Fonction 1
+
+```{{LANGUAGE}}
+{{FUNCTION_1_SIGNATURE}}
+```
+
+**Description :** {{FUNCTION_1_DESCRIPTION}}
+
+**Paramètres :**
+- `param1` : {{PARAM_1_DESCRIPTION}}
+- `param2` : {{PARAM_2_DESCRIPTION}}
+
+**Retour :** {{RETURN_DESCRIPTION}}
+
+**Exemple :**
+```{{LANGUAGE}}
+{{FUNCTION_1_EXAMPLE}}
+```
+
+## Troubleshooting
+
+### Problème 1 : {{PROBLEM_1}}
+
+**Solution :** {{SOLUTION_1}}
+
+### Problème 2 : {{PROBLEM_2}}
+
+**Solution :** {{SOLUTION_2}}
+
+## Best Practices
+
+1. **{{PRACTICE_1_TITLE}}** : {{PRACTICE_1_DESCRIPTION}}
+2. **{{PRACTICE_2_TITLE}}** : {{PRACTICE_2_DESCRIPTION}}
+3. **{{PRACTICE_3_TITLE}}** : {{PRACTICE_3_DESCRIPTION}}
+
+## Références
+
+- {{REFERENCE_1}}
+- {{REFERENCE_2}}

@@ -1,0 +1,12 @@
+# Get External IP
+alias myexternalip="curl https://ipinfo.io/json"
+
+# Quickly serve the current directory as HTTP
+alias serve='ruby -run -e httpd . -p 8000'
+
+# Aliases to run rubocop / rspec / cucumber
+alias rrc="RUBYOPT=-W0 bundle exec rubocop -a && RUBYOPT=-W0 bundle exec rspec spec && RUBYOPT=-W0 bundle exec cucumber"
+alias rr="RUBYOPT=-W0 bundle exec rubocop -a && RUBYOPT=-W0 bundle exec rspec spec"
+alias r="RUBYOPT=-W0 bundle exec rspec spec"
+alias ru="RUBYOPT=-W0 bundle exec rubocop -a"
+alias rspec='RUBYOPT=-W0 bundle exec rspec'

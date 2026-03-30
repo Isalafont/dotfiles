@@ -1,0 +1,64 @@
+---
+name: {{SKILL_NAME}}
+description: {{DESCRIPTION}}
+argument-hint: {{ARGUMENT_HINT}}
+allowed-tools: {{ALLOWED_TOOLS}}
+---
+
+# {{SKILL_TITLE}}
+
+{{OVERVIEW}}
+
+## Quand Utiliser ce Skill
+
+**✅ Utiliser quand :**
+- {{USE_CASE_1}}
+- {{USE_CASE_2}}
+- {{USE_CASE_3}}
+
+**❌ Ne PAS utiliser quand :**
+- {{AVOID_CASE_1}}
+- {{AVOID_CASE_2}}
+
+## Workflow
+
+### 1. {{STEP_1_TITLE}}
+
+{{STEP_1_DESCRIPTION}}
+
+### 2. {{STEP_2_TITLE}}
+
+{{STEP_2_DESCRIPTION}}
+
+### 3. {{STEP_3_TITLE}}
+
+{{STEP_3_DESCRIPTION}}
+
+## Exemples
+
+### Exemple 1 : {{EXAMPLE_1_TITLE}}
+
+```{{LANGUAGE}}
+{{EXAMPLE_1_CODE}}
+```
+
+### Exemple 2 : {{EXAMPLE_2_TITLE}}
+
+```{{LANGUAGE}}
+{{EXAMPLE_2_CODE}}
+```
+
+## Références
+
+Pour plus de détails, consulter :
+- **Documentation détaillée** : [reference.md](reference.md)
+- **Exemples complets** : [examples.md](examples.md)
+
+## Ressources Externes
+
+- **{{RESOURCE_1_NAME}}** : {{RESOURCE_1_URL}}
+- **{{RESOURCE_2_NAME}}** : {{RESOURCE_2_URL}}
+
+---
+
+**Note :** {{ADDITIONAL_NOTES}}

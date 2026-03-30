@@ -1,0 +1,68 @@
+# {{SKILL_TITLE}}
+
+{{SHORT_DESCRIPTION}}
+
+## Structure du Skill
+
+```
+{{SKILL_NAME}}/
+├── SKILL.md              # Instructions principales
+├── reference.md          # Documentation détaillée
+├── examples.md           # Exemples d'utilisation
+├── templates/            # Templates de fichiers (optionnel)
+└── README.md             # Ce fichier
+```
+
+## Utilisation
+
+### Invocation par l'Utilisateur
+
+```bash
+/{{SKILL_NAME}} {{EXAMPLE_ARGS}}
+```
+
+### Invocation Automatique par Claude
+
+Claude invoque automatiquement ce skill quand :
+- {{AUTO_INVOKE_CASE_1}}
+- {{AUTO_INVOKE_CASE_2}}
+- {{AUTO_INVOKE_CASE_3}}
+
+## Fichiers
+
+### SKILL.md
+{{SKILL_MD_DESCRIPTION}}
+
+### reference.md
+{{REFERENCE_MD_DESCRIPTION}}
+
+### examples.md
+{{EXAMPLES_MD_DESCRIPTION}}
+
+### templates/
+{{TEMPLATES_DESCRIPTION}}
+
+## Métadonnées
+
+- **name**: `{{SKILL_NAME}}`
+- **description**: {{DESCRIPTION}}
+- **argument-hint**: `{{ARGUMENT_HINT}}`
+- **allowed-tools**: {{ALLOWED_TOOLS}}
+
+## Conformité Standards Anthropic
+
+✅ Ce skill respecte les recommandations officielles :
+- Frontmatter YAML avec métadonnées
+- SKILL.md < 500 lignes
+- Contenu divisé en fichiers logiques
+- Templates externes dans dossier dédié
+- Documentation claire et structurée
+
+## Ressources
+
+- **Documentation complète** : `~/assistant/systeme/claude-skills/`
+- **Standards Anthropic** : https://code.claude.com/docs/en/skills.md
+
+---
+
+**Dernière mise à jour** : {{DATE}}
