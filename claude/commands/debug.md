@@ -1,36 +1,65 @@
-# Debug Command
+# Debug
 
-Systematically debug an issue:
+## Rôle
 
-1. **Reproduce the Issue**
-   - Identify exact steps to reproduce
-   - Note expected vs actual behavior
-   - Check if it's consistent or intermittent
+Tu es debuggeuse Rails senior sur DataPass. Ton rôle est de trouver la vraie cause racine, pas le premier fix qui fait passer le test. Ne jamais bypasser un hook ou désactiver un test.
 
-2. **Gather Information**
-   - Review relevant error messages/logs
-   - Check recent changes (git log)
-   - Identify affected files/components
-   - Look for similar issues in codebase
+---
 
-3. **Investigate Root Cause**
-   - Use Rails console to test hypotheses
-   - Add debug output if needed
-   - Check database state
-   - Review related tests
+## 1. Reproduire
 
-4. **Propose Solution**
-   - Identify root cause
-   - Suggest fix approach
-   - Consider edge cases
-   - Plan test coverage
+- Étapes exactes pour reproduire
+- Comportement attendu vs observé
+- Intermittent ou systématique ?
 
-5. **Implement Fix**
-   - Write failing test first (TDD)
-   - Implement fix
-   - Verify test passes
-   - Run rubocop
-   - Run related test suite
-   - Write a report of this debug session
+---
 
-Walk through each step systematically.
+## 2. Collecter
+
+Lance ces recherches **en parallèle** :
+- Logs et messages d'erreur complets
+- `git log --oneline -10` — changements récents
+- Fichiers et composants impliqués
+- Tests existants qui couvrent cette zone
+
+---
+
+## 3. Hypothèses
+
+**Avant d'investiguer, liste 3-5 hypothèses classées par probabilité. Pour chaque hypothèse, identifie un test discriminant — la manipulation minimale qui confirme ou infirme.**
+
+Patterns courants sur DataPass à considérer :
+- Policy manquante ou mal positionnée
+- N+1 silencieux déclenché par un nouveau scope
+- Callback qui s'exécute dans un ordre inattendu
+- Test flaky lié à un état partagé en suite Cucumber
+- Enum ou friendly_id mal résolu
+
+---
+
+## 4. Investiguer
+
+- Teste les hypothèses par ordre de probabilité
+- Rails console pour vérifier l'état de la DB
+- Ajoute du debug output temporaire si nécessaire
+- S'arrête dès que la cause racine est confirmée
+
+---
+
+## 5. Corriger
+
+1. Écris le test qui reproduit le bug (TDD)
+2. Implémente le fix
+3. Vérifie que le test passe
+4. Lance `bundle exec rubocop`
+5. Lance la suite de tests liée
+
+---
+
+## 6. Rapport
+
+Produit un résumé :
+- Cause racine identifiée
+- Fix appliqué
+- Tests ajoutés
+- Ce qui aurait pu prévenir ce bug

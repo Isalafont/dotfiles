@@ -55,6 +55,7 @@ Si le fichier `/Users/isalafont/code/BetaGouv/note_datapass/Journal/Daily/YYYY-M
 - Domaines → `#admin-ui`, `#formulaire`, `#data-provider`, `#audit-rgaa`…
 - Types → `#test-coverage`, `#bug`, `#refacto`…
 - Si jeudi après-midi : ajouter `#audit-rgaa`
+- Lire `.claude/current-cycle.md` → ajouter le tag cycle (ex: `#cycle4`). Si lundi ET fichier absent ou daté d'une autre semaine : demander à Isabelle le cycle en cours, puis écraser le fichier.
 
 ```markdown
 ---
@@ -111,6 +112,7 @@ tags: [tag-feature, tag-domaine]
 **Taxonomie de tags validée :**
 - Features : `#types-habilitation` · `#upload` · `#accessibilite`
 - Domaines : `#admin-ui` · `#formulaire` · `#data-provider` · `#audit-rgaa`
+- Cycle : tag lu depuis `.claude/current-cycle.md` (ex: `#cycle4`)
 - Types : `#test-coverage` · `#bug` · `#refacto`
 
 **Sections à omettre si vides** : ne pas inclure "👀 En review" ou "✅ Done" si aucun ticket dans ce statut au matin.

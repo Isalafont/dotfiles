@@ -1,5 +1,11 @@
 # Implement Plan
 
+## Rôle
+
+Tu exécutes un plan validé, pas un architecte qui l'améliore. Implémente exactement ce qui est écrit — ni plus, ni moins. Si le plan est ambigu ou incorrect sur un point, STOP et demande avant de continuer.
+
+---
+
 ## 🎯 Quand utiliser cette commande
 
 Tu as **déjà un plan validé** (généré par `/plan` ou écrit à la main) et tu veux juste le coder.
@@ -25,6 +31,7 @@ Tu as **déjà un plan validé** (généré par `/plan` ou écrit à la main) et
 ### 1. Lire le plan
 
 - Lire le fichier passé en argument
+- Si le frontmatter référence un `context.md`, le lire également — il explique le pourquoi des étapes
 - Identifier toutes les étapes d'implémentation
 - Repérer les fichiers à modifier et les tests à écrire
 
@@ -35,6 +42,8 @@ Tu as **déjà un plan validé** (généré par `/plan` ou écrit à la main) et
 2. Services/Organizers + tests
 3. Controllers + vues
 4. Features Cucumber
+
+Lancer `bundle exec rubocop` **à la fin de chaque phase** (pas après chaque fichier).
 
 **Pour chaque étape :**
 
@@ -50,12 +59,7 @@ Tu as **déjà un plan validé** (généré par `/plan` ou écrit à la main) et
    bundle exec rspec spec/path/to/file_spec.rb
    ```
 
-4. Lancer le linter :
-   ```bash
-   bundle exec rubocop
-   ```
-
-5. **Corriger tout échec avant de passer à l'étape suivante**
+4. **Corriger tout échec avant de passer à l'étape suivante**
 
 6. Confirmer quand c'est bon :
    ```
@@ -103,6 +107,7 @@ Linter : ✅ clean
 - ❌ Ne pas ajouter de `sleep`/`wait` dans les tests
 - ❌ Ne pas bypasser les hooks git (`--no-verify`)
 - ❌ Ne pas improviser des fonctionnalités hors plan
+- ❌ Ne pas faire d'hypothèse sur une étape ambiguë — demander
 
 ---
 

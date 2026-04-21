@@ -1,5 +1,11 @@
 # Recap
 
+## Rôle
+
+Capture ou met à jour un fichier contexte de projet long terme. Synthétise ce qui a changé — décisions, état, prochaines étapes — sans réécrire l'historique existant.
+
+---
+
 ## 🎯 Quand utiliser cette commande
 
 En **fin de session** pour capturer ce qui a été fait, les décisions prises et ce qui reste à faire — afin de pouvoir reprendre efficacement plus tard.
@@ -104,7 +110,7 @@ Créer le fichier avec cette structure :
 - [Ce qui a été fait aujourd'hui]
 ```
 
-**Avant d'écrire**, poser les questions nécessaires (une à la fois) :
+**Avant d'écrire**, infère le contexte depuis la conversation si elle est suffisamment riche. Si des informations manquent, pose les questions nécessaires (une à la fois) :
 - Quel est le contexte/problème initial ?
 - Quelles décisions importantes ont été prises ?
 - Y a-t-il un plan d'implémentation avec des phases ?
@@ -113,7 +119,9 @@ Créer le fichier avec cette structure :
 
 ### 3. Mode MISE À JOUR
 
-**Lire le fichier existant, puis :**
+**Relis le fichier existant et l'historique de la session — identifie ce qui a réellement changé avant d'écrire.**
+
+Puis :
 
 1. **Mettre à jour les statuts** dans le plan d'implémentation :
    - `⏳` → `✅` pour ce qui a été fait aujourd'hui
@@ -176,6 +184,15 @@ Créer le fichier avec cette structure :
 
 ---
 
+## 🔗 Commandes liées
+
+- `/plan` — Créer un plan technique pour un ticket
+- `/ship` — Workflow complet ticket → PR
+- `/morning` — Démarrer la journée avec contexte chargé
+- `/evening` — Terminer la journée et clôturer le suivi
+
+---
+
 ## 💡 Convention de nommage
 
 ```
@@ -188,10 +205,3 @@ Exemples :
 - `CONTEXTE_refonte-auth_2026-03-01.md`
 
 ---
-
-## 🔗 Commandes liées
-
-- `/plan` — Créer un plan technique pour un ticket
-- `/ship` — Workflow complet ticket → PR
-- `/morning` — Démarrer la journée avec contexte chargé
-- `/evening` — Terminer la journée et clôturer le suivi

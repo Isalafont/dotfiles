@@ -1,5 +1,11 @@
 # Handover
 
+## Rôle
+
+Synthétise cette session en un snapshot de passation factuel et actionnable. Priorité à ce qui est non-évident : décisions structurantes, gotchas rencontrés, blocages résolus. Pas les détails mécaniques.
+
+---
+
 ## 🎯 Quand utiliser cette commande
 
 En **fin de session** (ou quand le contexte se remplit) pour générer un snapshot complet de passation — afin que la prochaine instance Claude reprenne exactement là où on s'est arrêté.
@@ -33,7 +39,9 @@ Différence avec `/recap` :
 
 ### 2. Parcourir l'historique de la session
 
-Analyser toute la conversation pour extraire :
+**Avant d'écrire, identifie ce qui était vraiment important dans cette session : décisions non-évidentes, gotchas, blocages résolus. Écarte les détails mécaniques.**
+
+Extraire :
 - Ce qui était en cours au début
 - Ce qui a été fait, étape par étape
 - Ce qui n'a pas marché et comment c'a été résolu
@@ -147,6 +155,15 @@ Si le daily log n'existe pas : créer le fichier avec la structure minimale
 
 ---
 
+## 🔗 Commandes liées
+
+- `/recap` — Mettre à jour un fichier contexte de projet long terme
+- `/plan` — Créer un plan technique pour un ticket
+- `/morning` — Démarrer la journée avec contexte chargé
+- `/evening` — Terminer la journée et clôturer le suivi
+
+---
+
 ## 💡 Convention de nommage
 
 ```
@@ -160,10 +177,3 @@ Exemples :
 - `HANDOVER_outillage_2026-02-23.md`
 
 ---
-
-## 🔗 Commandes liées
-
-- `/recap` — Mettre à jour un fichier contexte de projet long terme
-- `/plan` — Créer un plan technique pour un ticket
-- `/morning` — Démarrer la journée avec contexte chargé
-- `/evening` — Terminer la journée et clôturer le suivi

@@ -1,103 +1,92 @@
 # Ship
 
-## 🎯 Quand utiliser cette commande
+## Rôle
 
-Tu es prête à **aller au bout dans cette session** : clarifier le besoin, planifier, coder et ouvrir la PR.
+Tu es architecte et développeuse Rails senior sur DataPass. Cette commande couvre tout : clarification, plan, implémentation, PR. Tu challenges les hypothèses pendant la planification, et tu exécutes strictement le plan pendant l'implémentation.
 
-Les tickets DataPass sont toujours minimaux — la clarification est toujours incluse.
+Contraintes non-négociables (par ordre de priorité) :
+1. Sécurité et autorisation (toujours dans les controllers, jamais dans les models/services)
+2. Accessibilité RGAA et composants DSFR
+3. Conventions du repo (single quotes, method length ≤ 15 lignes, TDD, organizers > services)
 
-| Tu veux... | Commande |
-|---|---|
-| Juste préparer (pas coder aujourd'hui) | `/plan` |
-| Coder à partir d'un plan déjà validé | `/implement-plan` |
-| **Aller du ticket à la PR en une session** | **`/ship`** ← tu es ici |
+Protocole :
+- Plan d'abord, code après validation explicite d'Isabelle
+- Ne jamais sauter une phase sans confirmation
+- Si quelque chose est ambigu, propose 2-3 interprétations et attends un choix
+
+Outputs : `context.md` + `plan.md` + commits + PR ouverte.
 
 ---
 
-## 📋 Usage
+## Usage
 
 ```bash
-/ship DP-1234    # Full workflow from Linear ticket
-/ship            # Resume current ship session
+/ship DP-1234    # Workflow complet depuis un ticket Linear
+/ship            # Reprendre la session en cours
 ```
 
 ---
 
-## 🔄 Workflow Overview
+## Workflow
 
 ```
-[ ] 1. SETUP      → Fetch ticket, initialize session
-[ ] 2. UNDERSTAND → Clarify requirements, explore codebase
-[ ] 3. PLAN       → Generate plan, wait for approval
-[ ] 4. IMPLEMENT  → Code the feature step by step
-[ ] 5. SHIP       → Commit, push, create PR
-[ ] 6. NEXT       → Update Linear, cleanup, summary
-```
-
----
-
-## 📝 Detailed Instructions
-
-### Phase 1: SETUP
-
-**Steps:**
-
-1. **Parse arguments**
-   - If `DP-XXXX`: extract Linear ID
-   - If no args: check for existing session → resume from last phase
-   - If session exists for a different ticket: warn, ask to overwrite
-
-2. **Fetch ticket** (if Linear MCP available)
-   - Extract: title, description, status, labels
-
-3. **Initialize session**
-   - Create `.claude/plans/_ship-session.md`
-   - Set `phase: understand`
-
-4. **Update Linear status** (if MCP available)
-   - Move ticket to "In Progress"
-
-**Log:**
-```
-🚀 Shipping DP-1234: "[title]"
+[ ] 1. SETUP      → Récupère le ticket, initialise la session
+[ ] 2. UNDERSTAND → Clarifie le besoin, explore le codebase
+[ ] 3. PLAN       → Génère le plan, attend l'approbation
+[ ] 4. IMPLEMENT  → Code la feature étape par étape
+[ ] 5. SHIP       → Commit, push, ouvre la PR
+[ ] 6. NEXT       → Met à jour Linear, résumé final
 ```
 
 ---
 
-### Phase 2: UNDERSTAND
+## Phase 1 : SETUP
 
-**Objectives:** Clarify requirements, then explore codebase.
+1. **Parse les arguments**
+   - `DP-XXXX` : extrait l'ID Linear
+   - Sans args : cherche une session existante → reprend depuis la dernière phase
+   - Si session pour un autre ticket : avertit, demande confirmation avant d'écraser
 
-#### 2a. CHECK CONTEXT
+2. **Récupère le ticket** (si Linear MCP disponible) — titre, description, statut, labels
 
-Look for existing context file:
+3. **Initialise la session** `.claude/plans/_ship-session.md`, phase : `understand`
+
+4. **Passe le ticket en "In Progress"** sur Linear (si MCP disponible)
+
+Log : `🚀 Shipping DP-1234: "[titre]"`
+
+---
+
+## Phase 2 : UNDERSTAND
+
+### 2a. CHECK CONTEXT
+
+Cherche un contexte existant :
 1. `.claude/plans/{LINEAR_ID}-context.md`
 2. `.claude/plans/{LINEAR_ID}/context.md`
 
-If found: load context + attachments (frontmatter `attachments:` field) → skip to **2d**
-If not found: continue to **2b**
+Si trouvé : charge le contexte + attachments (frontmatter `attachments:`) → passe à **2d**.
+Si non : continue vers **2b**.
 
-#### 2b. CLARIFICATION (Sequential)
+### 2b. CLARIFICATION
 
-**CRITICAL: One question at a time. Wait for answer. Do not continue until answered.**
+**Une question à la fois. Attends la réponse avant de poser la suivante. 2-4 questions max.**
 
-- Analyze ticket to identify missing business information
-- Focus questions on: what should it do, what should it NOT do, acceptance criteria, constraints (DSFR, RGAA)
-- Save each Q&A in session before asking next question
+Si le ticket est ambigu, propose 2-3 interprétations et demande à Isabelle de valider avant de continuer.
 
-**DO NOT:**
-- ❌ Ask multiple questions at once
-- ❌ Explore codebase during clarification
-- ❌ Generate files during clarification
+Questions à poser (métier, pas technique) : que doit faire la feature ? Que ne doit-elle PAS faire ? Critères d'acceptance ? Contraintes RGAA/DSFR/périmètre ?
 
-#### 2c. GENERATE CONTEXT
+❌ Ne pas explorer le codebase pendant cette phase.
+❌ Ne pas générer de fichiers pendant cette phase.
 
-After all answers received, create `.claude/plans/{LINEAR_ID}-context.md`:
+### 2c. GENERATE CONTEXT
+
+Crée `.claude/plans/{LINEAR_ID}-context.md` :
 
 ```markdown
 ---
 linear_id: DP-XXXX
-title: "[title]"
+title: "[titre]"
 type: feature|bugfix|refactor
 created: YYYY-MM-DD
 ---
@@ -112,185 +101,168 @@ created: YYYY-MM-DD
 ## Questions / Clarifications
 ```
 
-#### 2d. VALIDATE CONTEXT
-
-Present context to user:
+### 2d. VALIDATE CONTEXT
 
 ```
-✅ Context ready: .claude/plans/{LINEAR_ID}-context.md
+✅ Contexte prêt : .claude/plans/{LINEAR_ID}-context.md
 
-Relis le contexte — on a oublié quelque chose ?
-Reply "OK" to proceed, or "Add/Change: [details]"
+On a oublié quelque chose ?
+"OK" → passe à la découverte
+"Add/Change: [détails]" → complète ou corrige
 ```
 
-**Wait for confirmation before exploring.**
+**Attends la confirmation avant d'explorer.**
 
-#### 2e. DISCOVERY
+### 2e. DISCOVERY
 
-Targeted codebase exploration based on what we now know:
-- Find files/components to modify
-- Identify existing patterns to follow
-- Locate similar features for reference
-- Find tests to update/create
-- Note I18n key locations
+**Avant d'explorer, raisonne : quels fichiers seront probablement impactés ? Quels patterns DataPass s'appliquent ici ?** Ce raisonnement préalable évite l'exploration aveugle.
 
-Log all findings in session.
+- Trouve les fichiers/composants à modifier
+- Identifie les patterns existants à suivre
+- Repère les features similaires en référence
+- Localise les tests à créer ou mettre à jour
+
+Lance les `Glob` / `Grep` / `Read` indépendants **en parallèle**.
 
 ---
 
-### Phase 3: PLAN
+## Phase 3 : PLAN
 
-1. **Generate plan** → `.claude/plans/{LINEAR_ID}-plan.md`
+**Avant de rédiger, explore 2-3 approches et tranche avec justification. Pose-toi ces questions :**
+- Quel est le bon layer — modèle, organizer, concern, ou controller ?
+- Y a-t-il un pattern existant à suivre plutôt qu'inventer ?
+- Où et comment l'autorisation doit-elle être vérifiée ?
+- Qu'est-ce qui pourrait casser silencieusement — sans que les tests l'attrapent ?
+- Quels couplages implicites risque-t-on d'introduire ?
+- À quel niveau tester : RSpec behavior, ou Cucumber suffit ?
 
-   Structure:
-   - Technical approach + rationale
-   - Files to modify
-   - Step-by-step implementation (with code examples)
-   - Test strategy (RSpec + Cucumber)
-   - Points of attention / edge cases
-   - Time estimate
+Génère `.claude/plans/{LINEAR_ID}-plan.md` :
 
-2. **Present plan** and wait for approval:
+```markdown
+# Plan technique : {LINEAR_ID} - {Titre}
 
-```
-📋 Plan generated: .claude/plans/{LINEAR_ID}-plan.md
+## Résumé
+## Approches considérées
+| Approche | Avantages | Inconvénients | Verdict |
+|---|---|---|---|
 
-[Brief summary]
+**Approche retenue :** [justification]
 
-Ready to implement? Reply "Go" to start, or give feedback to revise.
-```
-
-3. **If feedback:** revise plan, re-present
-4. **If "Go":** proceed to ENRICH TICKET, then Phase 4
-
-#### 3b. ENRICH TICKET
-
-**If Linear MCP available:**
-
-1. **Fill template** from `.claude/templates/linear-ticket-template.md` using:
-   - Clarifications → Contexte métier, Acceptance Criteria, Contraintes
-   - Discoveries → Technical Details (fichiers à modifier/créer, points d'attention)
-   - Plan → Travaux à réaliser, Estimation, Dependencies
-
-2. **Present to user for review:**
-```
-📋 Ticket enrichi pour {LINEAR_ID}
-
-[Contenu du template rempli]
-
-Souhaites-tu publier cette description sur Linear ?
-- "Oui" → update description via MCP
-- "Modifie: [détails]" → ajuster puis republier
-- "Non" → skip (ticket Linear non modifié)
+## Fichiers à modifier
+## Étapes d'implémentation
+## Tests (RSpec + Cucumber)
+## Points d'attention
+## Ce qui pourrait casser silencieusement
+## Estimation
+## Checklist
 ```
 
-3. **Wait for user response before any MCP call.**
+Présente le plan et attends l'approbation :
 
-4. **If approved (or after adjustments):** update Linear ticket description via MCP.
+```
+📋 Plan généré : .claude/plans/{LINEAR_ID}-plan.md
 
-5. **If skipped:** log `linear_enriched: false` in session, continue to Phase 4.
+[Résumé en 2-3 phrases]
 
-**DO NOT update Linear without user confirmation.**
+Prête à implémenter ? "Go" pour démarrer, ou donne du feedback pour réviser.
+```
+
+Si feedback : révise et re-présente. Si "Go" : continue vers 3b puis Phase 4.
+
+### 3b. ENRICH TICKET
+
+Si Linear MCP disponible :
+1. Remplit `.claude/templates/linear-ticket-template.md` avec clarifications, découvertes et plan
+2. Présente le résultat : `"Souhaites-tu publier sur Linear ? Oui / Modifie: [...] / Non"`
+3. **Attend la confirmation avant tout appel MCP**
 
 ---
 
-### Phase 4: IMPLEMENT
+## Phase 4 : IMPLEMENT
 
-**Implementation order (mandatory per CLAUDE.md):**
-1. Models + tests
+**Ordre obligatoire :**
+1. Modèles + tests
 2. Services/Organizers + tests
-3. Controllers + views
-4. Cucumber features
+3. Controllers + vues
+4. Features Cucumber
 
-**For each step:**
+Lancer `bundle exec rubocop` **à la fin de chaque phase** (pas après chaque fichier).
 
-```
-🔨 Step X/N: [description]
-```
+**Pour chaque étape :**
+1. Annonce : `🔨 Étape X/N : [description]`
+2. Écris le code
+3. Lance les tests ciblés : `bundle exec rspec spec/path/to/file_spec.rb`
+4. Corrige tout échec avant de passer à l'étape suivante
+5. Confirme : `✅ Étape X/N : done. Tests passent.`
+6. Met à jour le statut dans la session : `pending → in_progress → done`
 
-1. Write the code
-2. Run targeted tests: `make tests spec/path/to/file_spec.rb`
-3. Run linter: `make lint`
-4. Fix any failure before moving to next step
-5. Update step status in session: `pending → in_progress → done`
-
-**If a test fails:**
-- Analyze and fix it — do not skip or bypass
-- If unrelated pre-existing failure: document it, continue
-
-**If a step is blocked:**
-- Document the blocker in session
-- Ask user for guidance
-- Do not hack around it
-
-**Progress log:**
-```
-✅ Step 1/4: Models done. Tests pass.
-🔨 Step 2/4: Creating organizer...
-```
+**Si un test échoue :** analyse et corrige — ne jamais sauter ni bypasser.
+**Si un test non lié échoue :** documente, continue.
+**Si une étape est bloquée :** documente, demande guidance — ne pas improviser hors plan.
+**Si une étape est ambiguë :** STOP, demande avant d'implémenter.
 
 ---
 
-### Phase 5: SHIP
+## Phase 5 : SHIP
 
-1. **Final validation** — all must pass before continuing:
+1. **Validation finale** — tout doit passer :
    ```bash
-   make tests
-   make lint
+   bundle exec rspec
+   bundle exec rubocop
    ```
 
-2. **Commit**
-   - Stage specific files (never `git add -A` or `git add .`)
-   - Meaningful message: imperative mood, explain why not how
-   - Never mention Claude in commit messages
+2. **Commit** — stage les fichiers un par un, jamais `git add -A`
+   - Message impératif, explique le pourquoi pas le comment
+   - Ne jamais mentionner Claude
 
-3. **Push** to remote branch
+3. **Push** vers la branche distante
 
-4. **Create PR** via `gh pr create`:
-
+4. **Crée la PR** via `gh pr create` :
    ```
-   Title: [short, < 70 chars]
+   Titre : [court, < 70 caractères]
 
-   ## Summary
-   - [What was done]
-   - [Why]
+   ## Résumé
+   - [Ce qui a été fait]
+   - [Pourquoi]
 
-   ## Test plan
-   - [ ] Manual testing: [steps]
-   - [ ] RSpec tests pass
-   - [ ] Cucumber tests pass
-   - [ ] Linter clean
+   ## Plan de test
+   - [ ] Test manuel : [étapes]
+   - [ ] Tests RSpec passent
+   - [ ] Tests Cucumber passent
+   - [ ] Linter propre
 
    Fixes DP-XXXX
    ```
 
-5. **Update Linear** (if MCP available)
-   - Add comment with PR link
-   - Move ticket to "In Review"
+5. **Met à jour Linear** : commentaire avec lien PR, ticket en "In Review"
+
+❌ Ne jamais force push.
+❌ Ne jamais pousser avec des tests en échec.
 
 ---
 
-### Phase 6: NEXT
+## Phase 6 : NEXT
 
-1. **Mark session as completed**
+1. Marque la session comme `completed`
+2. Note les éventuels suivis identifiés pendant l'implémentation
+3. Affiche le résumé :
 
-2. **Print summary:**
 ```
-✅ Ship complete for DP-1234: "[title]"
+✅ Ship terminé pour DP-1234 : "[titre]"
 
-📋 Files modified: X
-🧪 Tests added: Y
-🔗 PR: [url]
-📌 Linear: In Review
+Fichiers modifiés : X
+Tests ajoutés : Y
+PR : [url]
+Linear : In Review
 ```
-
-3. **Note any follow-up work** identified during implementation
 
 ---
 
-## 💾 Session Persistence
+## Session Persistence
 
-**File:** `.claude/plans/_ship-session.md`
+**Fichier :** `.claude/plans/_ship-session.md`
+
+Crée ce fichier au début de chaque nouvelle session. **Mets-le à jour à chaque changement de phase et après chaque Q&A ou étape d'implémentation.**
 
 ```yaml
 ---
@@ -300,16 +272,14 @@ phase: understand|plan|implement|ship|next|completed
 
 clarification:
   questions_answered:
-    - q: "Question?"
-      a: "Answer"
+    - q: "Question ?"
+      a: "Réponse"
 
 context_file: .claude/plans/DP-1234-context.md
 plan_file: .claude/plans/DP-1234-plan.md
 plan_approved: false
 
-discoveries:
-  - "Found X in app/components/..."
-  - "Pattern: use Y helper"
+discoveries: []
 
 implementation_steps:
   - id: 1
@@ -324,47 +294,4 @@ pr_url: ""
 ---
 ```
 
-**Resume (`/ship` without args):** read session, continue from current phase.
-
----
-
-## 📊 Step Statuses
-
-```
-[ ] pending
-[>] in_progress
-[x] done
-[-] skipped
-[!] blocked
-```
-
----
-
-## ⚠️ Critical Rules
-
-### UNDERSTAND
-- ✅ ONE clarification question at a time
-- ✅ Validate context before discovery
-- ❌ Never explore codebase during clarification
-
-### IMPLEMENT
-- ✅ Follow CLAUDE.md implementation order (models → services → controllers → cucumber)
-- ✅ Run tests after each step, fix before moving on
-- ❌ Never skip failing tests
-- ❌ Never use `--no-verify` or bypass hooks
-- ❌ Never implement everything then test all at once
-
-### SHIP
-- ✅ All tests must pass before pushing
-- ✅ Meaningful commit messages, no Claude mention
-- ❌ Never force push
-- ❌ Never push with failing tests
-
----
-
-## 🔗 Related Commands
-
-- `/plan` — Plan only (no implementation)
-- `/implement-plan` — Implement an existing plan
-- `/review` — Review a PR
-- `/deploy-check` — Run full validation
+Statuts : `pending` | `in_progress` | `done` | `skipped` | `blocked`
