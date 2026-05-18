@@ -18,6 +18,7 @@ Je veux planifier sans coder aujourd'hui     →  /plan DP-XXXX
 J'ai un plan validé, je veux coder           →  /implement-plan
 Je veux aller du ticket à la PR en une session → /ship DP-XXXX
 Je veux reviewer une PR                      →  /review
+Je veux reviewer mon diff local avant commit →  /review-changes
 Je veux débugger un problème                 →  /debug
 Je veux vérifier que tout est OK avant deploy →  /deploy-check
 Je veux corriger un plan après feedback      →  /replan
@@ -101,7 +102,7 @@ Ordre obligatoire : Models + tests → Services/Organizers + tests → Controlle
 
 Workflow complet : **ticket Linear → PR mergeable** en une session.
 
-Enchaîne `/plan` + `/implement-plan` + commit + push + création de PR via `gh`. Tous les tests doivent passer avant le push.
+Enchaîne `/plan` + `/implement-plan` + **phase REVIEW** (invoque `/review-changes` en sous-agent) + commit + push + création de PR via `gh`. Tous les tests doivent passer avant le push, et la review doit être ✅ (verdict ⚠️ demande confirmation, verdict 🚫 stoppe le workflow).
 
 ---
 
@@ -116,6 +117,20 @@ Réécrit un plan existant après annotations `FIXME`. Lit le fichier annoté, i
 ### `/review`
 
 Review PR structurée en 7 axes : contexte, feedback existant, remise en question de l'implémentation, qualité du code, bonnes pratiques Rails, couverture de tests, documentation.
+
+---
+
+### `/review-changes`
+
+Review **d'une diff locale avant commit**, plus rapide et plus ciblée que `/review`. Trois modes :
+
+```bash
+/review-changes              # Working tree (unstaged + staged)
+/review-changes --staged     # Staged uniquement
+/review-changes --branch     # Tous les commits de la branche vs develop
+```
+
+Pas de fichier généré — verdict direct dans la conversation. Invoquée automatiquement par `/ship` avant la phase SHIP.
 
 ---
 

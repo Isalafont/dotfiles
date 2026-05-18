@@ -203,6 +203,19 @@ Lancer `bundle exec rubocop` **à la fin de chaque phase** (pas après chaque fi
 
 ---
 
+## Phase 4b : REVIEW
+
+Avant de pousser, lance `/review-changes --from-ship` en sous-agent pour auditer la diff complète de la branche.
+
+**Selon le verdict** :
+- ✅ **Prête à commit** — résumé en une ligne, passer en Phase 5.
+- ⚠️ **Retouches recommandées** — afficher le rapport à Isabelle, demander explicitement « Je passe en SHIP malgré les suggestions ou je corrige avant ? »
+- 🚫 **Bloqué** — afficher le rapport, **stopper le workflow**. Mettre la session en phase `review-pending`. Reprendre via `/replan` ou en corrigeant manuellement avant de relancer `/ship`.
+
+❌ Ne jamais sauter cette phase. Elle attrape les régressions silencieuses, les couplages implicites, et les violations RGAA/sécurité que les tests verts ne voient pas.
+
+---
+
 ## Phase 5 : SHIP
 
 1. **Validation finale** — tout doit passer :
