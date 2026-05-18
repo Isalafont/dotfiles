@@ -27,6 +27,8 @@ Je veux archiver un plan de recherche        →  /archive PLAN_mon-sujet.md
 Je veux créer une note de travail            →  /document [type]
 Rapport de fin de semaine                    →  /weekly
 Bilan de fin de mois                         →  /monthly
+Identifier tickets stale (>14j)              →  /stale-tickets
+Pull commentaires Linear → vault             →  /sync-ticket DP-XXXX
 ```
 
 ---
@@ -53,7 +55,7 @@ Agrège : PRs DataPass ouvertes (à toi / en attente / Dependabot), tickets Line
 
 ### `/evening`
 
-Clôture la journée : met à jour le daily log (réalisations, tickets travaillés, priorités lendemain), appende une ligne dans la section "Sessions de travail" de chaque ticket travaillé, met à jour le statut dans la note epic.
+Clôture la journée : met à jour le daily log (réalisations, tickets travaillés, priorités lendemain), appende une ligne dans la section "Sessions de travail" de chaque ticket travaillé, met à jour le statut dans la note epic. **Détecte aussi les PRs mergées du jour** non encore archivées dans le vault et propose `/archive DP-XXXX` pour chacune.
 
 ---
 
@@ -212,6 +214,28 @@ Génère `Journal/Reports/Weekly/WEEK_YYYY-WNN.md`.
 Bilan mensuel : agrège les weekly reports, tendances, epics du mois, leçons récurrentes.
 Inclut une comparaison vs le mois précédent (deltas ↑↓= sur tickets, PRs, présence), une section "Travail hors-ticket du mois" agrégée depuis les weekly reports, et une estimation de charge pour le mois suivant (🟢/🟡/🔴).
 Génère `Journal/Reports/Monthly/MONTH_YYYY-MM.md`.
+
+---
+
+### `/stale-tickets`
+
+Identifie les tickets In Progress / In Review qui traînent depuis plus de N jours (défaut 14). Catégorise (Reprise possible / Bloqué externe / Oublié / À archiver) avec cross-check git + GitHub pour éviter les faux positifs. Lecture seule par défaut. Invoquée automatiquement par `/morning` les lundis.
+
+```bash
+/stale-tickets              # seuil 14 jours
+/stale-tickets --days 7
+```
+
+---
+
+### `/sync-ticket [TICKET-ID]`
+
+Pull les commentaires Linear d'un ticket dans sa note vault `Tickets/YYYY-MM/{TICKET-ID}/index.md`. Supporte les deux équipes : préfixe `DP-` (DataPass) ou `API-` (API Parteprise) — la distinction est tracée via le frontmatter (`team:`), pas par sous-dossier. Append idempotent (ne re-écrit pas un commentaire déjà sync). Met à jour le frontmatter (statut, priorité, synced_at). Utile avant un `/archive` ou pour récupérer un contexte offline après une pause.
+
+```bash
+/sync-ticket DP-1234
+/sync-ticket API-6735
+```
 
 ---
 

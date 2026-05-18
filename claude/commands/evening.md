@@ -25,13 +25,43 @@ Parcourir l'historique de la conversation pour extraire :
 - Les blocages rencontrés
 - Les leçons apprises
 
-### 2. Lire le daily log du jour
+### 2. Récupérer les reviews GitHub du jour
+
+Via l'API GitHub, récupérer toutes les PRs reviewées aujourd'hui (approvals, commentaires, changes requested) :
+
+```bash
+gh api graphql -f query='
+{
+  user(login: "Isalafont") {
+    contributionsCollection(from: "YYYY-MM-DDT00:00:00Z", to: "YYYY-MM-DDT23:59:59Z") {
+      pullRequestReviewContributions(first: 50) {
+        nodes {
+          pullRequest { number title url state }
+          pullRequestReview { state submittedAt }
+        }
+      }
+    }
+  }
+}'
+```
+
+Ajouter (ou mettre à jour) la section `## 👀 Reviews du Jour` dans le daily avec le résultat :
+
+```markdown
+## 👀 Reviews du Jour
+
+- **PR #XXXX** — {Titre} {✅ Approved / 💬 Commented / 🔄 Changes requested} → {open/merged}
+```
+
+Si aucune review aujourd'hui : ne pas créer la section.
+
+### 3. Lire le daily log du jour
 
 Lire `/Users/isalafont/code/BetaGouv/note_datapass/Journal/Daily/YYYY-MM-DD.md` (date du jour).
 S'il n'existe pas (morning non lancé) : le créer avec la structure complète.
 S'il existe : compléter sans écraser les sections déjà remplies par /handover ou /recap.
 
-### 3. Mettre à jour les sections de tickets dans le daily log
+### 4. Mettre à jour les sections de tickets dans le daily log
 
 **Déplacer les tickets selon leur statut final :**
 - PR ouverte → déplacer vers `👀 En review`
@@ -40,7 +70,7 @@ S'il existe : compléter sans écraser les sections déjà remplies par /handove
 
 **Ajouter les tags Obsidian manquants** sur les nouvelles entrées de tickets.
 
-### 4. Compléter les sections de clôture
+### 5. Compléter les sections de clôture
 
 **Section "📝 Notes de Travail"** — pour chaque ticket travaillé :
 
@@ -83,7 +113,7 @@ S'il existe : compléter sans écraser les sections déjà remplies par /handove
 2. {Priorité 2}
 ```
 
-### 4. Mettre à jour les notes de tickets (seulement si tickets travaillés)
+### 6. Mettre à jour les notes de tickets (seulement si tickets travaillés)
 
 Pour chaque ticket Linear travaillé aujourd'hui :
 
@@ -110,7 +140,7 @@ Si elle existe :
 | [[YYYY-MM-DD]] | [[DP-XXXX]], [[DP-YYYY]] |
 ```
 
-### 5. Mettre à jour tickets.md (seulement si tickets travaillés)
+### 7. Mettre à jour tickets.md (seulement si tickets travaillés)
 
 Si aucun ticket Linear travaillé aujourd'hui : **ne pas toucher au fichier**.
 
@@ -122,7 +152,30 @@ Si des tickets ont été travaillés :
 - Ajouter les nouvelles infos (PR, blocages, décisions)
 - Mettre à jour la date en bas du fichier (`*Dernière mise à jour : YYYY-MM-DD*`)
 
-### 6. Résumer à Isabelle
+### 7b. Détecter les PRs mergées du jour et proposer l'archive
+
+Lister les PRs mergées aujourd'hui sur DataPass :
+
+```bash
+gh pr list --repo etalab/data_pass --author Isalafont --state merged \
+  --search "merged:>=$(date -v-1d +%Y-%m-%d)" \
+  --json number,title,headRefName,mergedAt
+```
+
+Pour chaque PR mergée, extraire le ticket Linear depuis le nom de branche (préfixe `dp-NNNN` ou `api-NNNN`).
+
+Vérifier si le ticket a déjà été archivé dans le vault :
+```bash
+find ~/code/BetaGouv/note_datapass/Tickets -name "{TICKET-ID}*" 2>/dev/null
+```
+
+S'il y a au moins un ticket mergé non archivé, **proposer** à Isabelle :
+
+> 🗂 PRs mergées aujourd'hui non archivées : DP-XXXX, DP-YYYY. Veux-tu que je lance `/archive DP-XXXX` pour chacun ? (oui / non / lequel)
+
+❌ Ne **jamais** archiver sans accord explicite.
+
+### 8. Résumer à Isabelle
 
 Afficher :
 - Tickets travaillés et leur statut final
