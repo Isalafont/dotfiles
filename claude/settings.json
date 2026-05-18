@@ -1,5 +1,18 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
+    "allow": [
+      "Read(**/note_datapass/**)",
+      "Write(**/note_datapass/**)",
+      "Edit(**/note_datapass/**)",
+      "Bash(mkdir -p /Users/isalafont/code/BetaGouv/note_datapass/**)",
+      "Read(/Users/isalafont/.claude/projects/**/memory/**)",
+      "Write(/Users/isalafont/.claude/projects/**/memory/**)",
+      "Edit(/Users/isalafont/.claude/projects/**/memory/**)"
+    ],
     "deny": [
       "Read(**/.ssh/*)",
       "Read(**/*.pem)",
@@ -9,20 +22,24 @@
       "Read(**/*secret*)",
       "Read(**/*credential*)",
       "Read(**/.gnupg/*)",
-      "Bash(rm -rf /*)",
-      "Bash(git push --force *)",
       "Bash(wget *)",
       "Bash(eval *)",
-      "Bash(python* -c *)",
       "Bash(ruby -e *)",
-      "Bash(node -e *)"
-    ]
+      "Bash(node -e *)",
+      "Bash(bash -c *)",
+      "Bash(sh -c *)",
+      "Bash(curl * | *)",
+      "Read(**/.netrc)",
+      "Read(**/.aws/credentials)",
+      "Read(**/.pgpass)"
+    ],
+    "ask": [
+      "Bash(git commit*)",
+      "Bash(git push*)"
+    ],
+    "defaultMode": "auto"
   },
-  "model": "opusplan",
-  "enabledPlugins": {
-    "frontend-design@claude-plugins-official": true,
-    "ruby-lsp@claude-plugins-official": true
-  },
+  "model": "OPUS",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -31,6 +48,29 @@
             "type": "command",
             "command": "bash ~/.claude/hooks/morning_check.sh",
             "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/bash-tool-call.sh",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/session_start_linear.sh",
+            "timeout": 3
           }
         ]
       }
@@ -48,12 +88,29 @@
       }
     ]
   },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "accessibility@rgaa-toolkit": true
+  },
   "extraKnownMarketplaces": {
     "claude-code-plugins": {
       "source": {
         "source": "github",
         "repo": "anthropics/claude-code"
       }
+    },
+    "rgaa-toolkit": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/isalafont/.claude/skills/rgaa-dev"
+      }
     }
-  }
+  },
+  "language": "french",
+  "tui": "fullscreen",
+  "showThinkingSummaries": true,
+  "theme": "auto",
+  "verbose": true,
+  "skipAutoPermissionPrompt": true
 }
