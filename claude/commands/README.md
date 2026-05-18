@@ -9,6 +9,7 @@ Elles s'invoquent avec `/nom-de-la-commande` dans l'interface Claude Code.
 
 ```
 Début de journée                             →  /morning
+État global multi-projets (read-only)        →  /overview
 Fin de journée                               →  /evening
 Fin de session sans clôturer la journée      →  /handover
 Snapshot de contexte en cours de session     →  /recap
@@ -34,6 +35,18 @@ Bilan de fin de mois                         →  /monthly
 ### `/morning`
 
 Démarre la journée : lit le dernier daily log, fetche les tickets Linear assignés, crée le daily log du jour avec les tickets en cours annotés de leur epic.
+
+---
+
+### `/overview`
+
+Bird's eye view multi-projets, instantané et read-only. Différent de `/morning` : ne crée rien, ne pose pas de question.
+
+Agrège : PRs DataPass ouvertes (à toi / en attente / Dependabot), tickets Linear In Review / In Progress / Todo, activité git récente par worktree, statut du daily log du jour, plans/décisions en cours dans `Meta/`.
+
+```bash
+/overview
+```
 
 ---
 
