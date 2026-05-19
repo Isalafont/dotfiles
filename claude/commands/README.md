@@ -22,8 +22,9 @@ Je veux reviewer mon diff local avant commit →  /review-changes
 Je veux débugger un problème                 →  /debug
 Je veux vérifier que tout est OK avant deploy →  /deploy-check
 Je veux corriger un plan après feedback      →  /replan
-Je veux archiver un ticket terminé           →  /archive DP-XXXX
-Je veux archiver un plan de recherche        →  /archive PLAN_mon-sujet.md
+Je veux archiver un ticket terminé           →  /cleanup-plans DP-XXXX
+Je veux archiver un plan de recherche        →  /cleanup-plans PLAN_mon-sujet.md
+Je veux faire un cleanup batch (vendredi)    →  /cleanup-plans --stale
 Je veux créer une note de travail            →  /document [type]
 Rapport de fin de semaine                    →  /weekly
 Bilan de fin de mois                         →  /monthly
@@ -55,7 +56,7 @@ Agrège : PRs DataPass ouvertes (à toi / en attente / Dependabot), tickets Line
 
 ### `/evening`
 
-Clôture la journée : met à jour le daily log (réalisations, tickets travaillés, priorités lendemain), appende une ligne dans la section "Sessions de travail" de chaque ticket travaillé, met à jour le statut dans la note epic. **Détecte aussi les PRs mergées du jour** non encore archivées dans le vault et propose `/archive DP-XXXX` pour chacune.
+Clôture la journée : met à jour le daily log (réalisations, tickets travaillés, priorités lendemain), appende une ligne dans la section "Sessions de travail" de chaque ticket travaillé, met à jour le statut dans la note epic. **Détecte aussi les PRs mergées du jour** non encore archivées dans le vault et propose `/cleanup-plans DP-XXXX` pour chacune. **Commit + push automatique du vault** en fin de routine (étape 7c, avec `git pull --rebase` avant push).
 
 ---
 
@@ -150,11 +151,11 @@ Workflow debugging en 5 étapes : reproduire → collecter → analyser → prop
 
 ## Archivage et documentation
 
-### `/archive [DP-XXXX | fichier]`
+### `/cleanup-plans [DP-XXXX | fichier | --stale]`
 
-Deux modes selon l'argument :
+Trois modes selon l'argument :
 
-**Mode ticket** — `DP-XXXX` :
+**Mode ticket** — `(DP|API)-XXXX` :
 - Copie `.claude/plans/DP-XXXX/` → vault `Tickets/YYYY-MM/DP-XXXX/`
 - Crée `index.md` avec frontmatter et wikilinks
 - Met à jour la note epic si applicable
@@ -170,17 +171,32 @@ Routing automatique par préfixe vers le vault Obsidian :
 | `PROPOSITION_*` | `Suivi/` |
 | `review-*` | `Suivi/` |
 
+**Mode batch** — `--stale` (rituel vendredi via `/weekly`) :
+- Scanne `.claude/plans/`, filtre `mtime > 14 jours`
+- Skip sessions actives, plans `status: en cours`, tickets Todo/In Progress dans Linear
+- Catégorise par préfixe et propose un plan groupé (confirmation globale)
+- `mv` direct sans index Obsidian riche (backup historique)
+- `--stale --yes` : skip confirmation (invocable depuis `/weekly`)
+
 ```bash
-/archive DP-1234
-/archive PLAN_agents-claude.md
-/archive rapport-secu-vm.md
+/cleanup-plans DP-1234
+/cleanup-plans PLAN_agents-claude.md
+/cleanup-plans rapport-secu-vm.md
+/cleanup-plans --stale
 ```
+
+**Auto-commit + push du vault** (tous modes) : après archivage, la commande fait
+`cd $VAULT && git add … && git commit && git pull --rebase && git push`. Si le
+rebase échoue (conflit avec un autre poste / iOS Obsidian), stop et demande
+résolution manuelle. Pas de `--force` push.
+
+> Renommée depuis `/archive` le 2026-05-19 (sémantique plus claire côté batch, 1 seule commande à maintenir). Auto-commit/push du vault ajouté le 2026-05-19.
 
 ---
 
 ### `/document [type]`
 
-Crée une note de travail dans `.claude/plans/` avec préfixe automatique, puis archivable via `/archive`.
+Crée une note de travail dans `.claude/plans/` avec préfixe automatique, puis archivable via `/cleanup-plans`.
 
 | Type | Préfixe | Destination finale |
 |------|---------|-------------------|
@@ -206,6 +222,7 @@ Crée une note de travail dans `.claude/plans/` avec préfixe automatique, puis 
 Rapport hebdomadaire : agrège les daily logs de la semaine, statistiques tickets/PRs/présence, graphiques Mermaid, section epics travaillées.
 Inclut une comparaison vs la semaine précédente (deltas ↑↓=), une section "Travail hors-ticket" (tooling, config, reviews), et une estimation de charge pour la semaine suivante (🟢/🟡/🔴).
 Génère `Journal/Reports/Weekly/WEEK_YYYY-WNN.md`.
+**Invoque `/cleanup-plans --stale --yes`** pour archiver les fichiers > 14j de `.claude/plans/` (rituel vendredi). **Commit + push automatique du vault** en fin de routine.
 
 ---
 
@@ -213,7 +230,7 @@ Génère `Journal/Reports/Weekly/WEEK_YYYY-WNN.md`.
 
 Bilan mensuel : agrège les weekly reports, tendances, epics du mois, leçons récurrentes.
 Inclut une comparaison vs le mois précédent (deltas ↑↓= sur tickets, PRs, présence), une section "Travail hors-ticket du mois" agrégée depuis les weekly reports, et une estimation de charge pour le mois suivant (🟢/🟡/🔴).
-Génère `Journal/Reports/Monthly/MONTH_YYYY-MM.md`.
+Génère `Journal/Reports/Monthly/MONTH_YYYY-MM.md`. **Commit + push automatique du vault** en fin de routine.
 
 ---
 
@@ -230,7 +247,7 @@ Identifie les tickets In Progress / In Review qui traînent depuis plus de N jou
 
 ### `/sync-ticket [TICKET-ID]`
 
-Pull les commentaires Linear d'un ticket dans sa note vault `Tickets/YYYY-MM/{TICKET-ID}/index.md`. Supporte les deux équipes : préfixe `DP-` (DataPass) ou `API-` (API Parteprise) — la distinction est tracée via le frontmatter (`team:`), pas par sous-dossier. Append idempotent (ne re-écrit pas un commentaire déjà sync). Met à jour le frontmatter (statut, priorité, synced_at). Utile avant un `/archive` ou pour récupérer un contexte offline après une pause.
+Pull les commentaires Linear d'un ticket dans sa note vault `Tickets/YYYY-MM/{TICKET-ID}/index.md`. Supporte les deux équipes : préfixe `DP-` (DataPass) ou `API-` (API Parteprise) — la distinction est tracée via le frontmatter (`team:`), pas par sous-dossier. Append idempotent (ne re-écrit pas un commentaire déjà sync). Met à jour le frontmatter (statut, priorité, synced_at). Utile avant un `/cleanup-plans` ou pour récupérer un contexte offline après une pause.
 
 ```bash
 /sync-ticket DP-1234
@@ -246,11 +263,11 @@ Les commandes génèrent leurs fichiers dans `.claude/plans/` (gitignored) :
 ```
 .claude/plans/
 ├── DP-XXXX/                    # dossier ticket (plan + contexte)
-├── PLAN_*.md                   # investigations → Recherche/ via /archive
-├── CONTEXTE_*.md               # contextes de session → Recherche/ via /archive
-├── rapport-*.md                # rapports → Documentation/ via /archive
-├── PROPOSITION_*.md            # propositions → Suivi/ via /archive
-├── review-*.md                 # reviews → Suivi/ via /archive
+├── PLAN_*.md                   # investigations → Recherche/ via /cleanup-plans
+├── CONTEXTE_*.md               # contextes de session → Recherche/ via /cleanup-plans
+├── rapport-*.md                # rapports → Documentation/ via /cleanup-plans
+├── PROPOSITION_*.md            # propositions → Suivi/ via /cleanup-plans
+├── review-*.md                 # reviews → Suivi/ via /cleanup-plans
 ├── _plan-session.md            # session en cours (/plan)
 ├── _ship-session.md            # session en cours (/ship)
 └── HANDOVER_*.md               # snapshots de handover

@@ -110,11 +110,11 @@ Sous la section `## 💬 Commentaires Linear`, écrire (en mode **append idempot
 - ✅ Append idempotent (ne pas re-écrire un commentaire déjà sync)
 - ✅ Préserver les sections vault propres (Sessions de travail, Décisions, etc.) — ne toucher qu'à `## 💬 Commentaires Linear` et au frontmatter
 - ❌ Ne pas créer la note si elle n'est pas dans `Tickets/` (refuser de créer ailleurs)
-- ❌ Ne pas archiver — c'est le rôle de `/archive`
+- ❌ Ne pas archiver — c'est le rôle de `/cleanup-plans`
 
 ---
 
 ## 🔗 Commandes liées
 
-- `/archive {TICKET-ID}` — archive complète (copie `.claude/plans/` + index, ne pull pas les commentaires Linear)
+- `/cleanup-plans {TICKET-ID}` — archive complète (copie `.claude/plans/` + index, ne pull pas les commentaires Linear)
 - `/stale-tickets` — identifie les tickets qui mériteraient un sync avant archive

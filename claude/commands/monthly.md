@@ -34,6 +34,7 @@ Noter dans le bilan : "⚠️ Semaine WNN reconstituée depuis les daily logs".
 Sommer depuis les weekly reports :
 - Total tickets complétés / en review / in progress
 - Total PRs ouvertes / mergées
+- Total reviews GitHub (approved + commented + changes requested), depuis les sections "👀 Reviews du Jour" des daily logs ou les sections "🔧 Travail hors-ticket" des weekly reports
 - Total commits
 - Total jours travaillés / jours ouvrés du mois
 - Temps total estimé
@@ -69,7 +70,9 @@ Regrouper par catégorie pour la section mensuelle.
 ### 5. Fetcher Linear pour l'état fin de mois
 
 Via MCP Linear, récupérer les statuts actuels de tous les tickets mentionnés
-(user ID `733836f2-a572-4acd-bd62-b70ce08c6421`, team `41f8feef-8341-44b0-9dc8-bd2cd44e514f`).
+(user ID `733836f2-a572-4acd-bd62-b70ce08c6421`) — **sans filtrer par équipe**, car les tickets
+peuvent venir des deux teams : DataPass (`DP`) et API Parteprise (`API`). Conserver l'`identifier`
+tel quel (ex: `DP-1234`, `API-6735`) dans le bilan.
 
 ### 6. Générer le bilan mensuel
 
@@ -98,7 +101,7 @@ xychart-beta
     line [{N}, {N}, {N}, {N}]
 ```
 
-**Résumé :** {N} tickets traités · {N} complétés · {N} PRs mergées · {N}/{ouvrés} jours · {X}h · {X}h/ticket en moy.
+**Résumé :** {N} tickets traités · {N} complétés · {N} PRs mergées · {N} reviews GitHub · {N}/{ouvrés} jours · {X}h · {X}h/ticket en moy.
 
 **vs {mois précédent} :** tickets traités {N} ({↑↓=}{delta}) · complétés {N} ({↑↓=}{delta}) · PRs {N} ({↑↓=}{delta}) · présence {X}% ({↑↓=}{delta})
 
@@ -106,9 +109,9 @@ xychart-beta
 
 ## 📈 Semaine par semaine
 
-| Semaine | Dates | Présence | ✅ | 🔄 | 🚧 | PRs |
-|---------|-------|----------|----|----|-----|-----|
-| W{NN} | {lundi}→{vendredi} | {N}/5 | {N} | {N} | {N} | {N} |
+| Semaine | Dates | Présence | ✅ | 🔄 | 🚧 | PRs | Reviews |
+|---------|-------|----------|----|----|-----|-----|---------|
+| W{NN} | {lundi}→{vendredi} | {N}/5 | {N} | {N} | {N} | {N} | {N} |
 
 **Semaine la plus productive :** W{NN} — {N} tickets complétés
 
@@ -178,9 +181,22 @@ xychart-beta
 | W{NN} | `WEEK_{YYYY-WNN}.md` | ⚠️ Reconstruit depuis daily logs |
 ````
 
+### 6b. Commit + push vault
+
+Après génération du bilan mensuel :
+
+```bash
+cd /Users/isalafont/code/BetaGouv/note_datapass
+git add Reports/Monthly/
+git commit -m "monthly: bilan {MMMM YYYY}"
+git pull --rebase && git push
+```
+
+Si `git pull --rebase` échoue → stop, signaler à Isabelle. Pas de `--force`.
+
 ### 7. Résumer à Isabelle
 
-Afficher les stats clés du mois (présence, tickets, tendance principale)
+Afficher les stats clés du mois (présence, tendance principale)
 et l'emplacement du fichier généré.
 
 ---

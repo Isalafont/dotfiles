@@ -171,9 +171,24 @@ find ~/code/BetaGouv/note_datapass/Tickets -name "{TICKET-ID}*" 2>/dev/null
 
 S'il y a au moins un ticket mergé non archivé, **proposer** à Isabelle :
 
-> 🗂 PRs mergées aujourd'hui non archivées : DP-XXXX, DP-YYYY. Veux-tu que je lance `/archive DP-XXXX` pour chacun ? (oui / non / lequel)
+> 🗂 PRs mergées aujourd'hui non archivées : DP-XXXX, DP-YYYY. Veux-tu que je lance `/cleanup-plans DP-XXXX` pour chacun ? (oui / non / lequel)
 
 ❌ Ne **jamais** archiver sans accord explicite.
+
+### 7c. Commit + push vault
+
+Après toutes les modifs du jour (daily log, tickets travaillés, tickets.md, notes epic, éventuels archives) :
+
+```bash
+cd /Users/isalafont/code/BetaGouv/note_datapass
+git add Journal/ Tickets/ Epics/ Suivi/ Documentation/ Recherche/
+git commit -m "evening: clôture daily YYYY-MM-DD + {N} ticket(s) travaillé(s)"
+git pull --rebase && git push
+```
+
+Si `git pull --rebase` échoue (conflit avec un autre poste / Obsidian iOS) → stop, ne pas push, signaler à Isabelle pour résolution manuelle. Pas de `--force`.
+
+Si rien n'a été modifié dans le vault (cas rare : journée sans daily log mis à jour) → skip silencieusement, ne pas créer un commit vide.
 
 ### 8. Résumer à Isabelle
 

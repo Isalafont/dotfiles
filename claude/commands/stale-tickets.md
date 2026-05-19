@@ -44,7 +44,7 @@ Pour chaque ticket stale, vérifier :
 | 🟢 Reprise possible | branche locale + commits récents | « Reprendre le travail sur DP-XXXX ? » |
 | 🟡 Bloqué externe | PR en review depuis > 7 jours | « Relancer le reviewer ? » |
 | 🟠 Oublié | aucune branche / aucun commit récent | « Réassigner ou repasser en Todo ? » |
-| 🔴 À archiver | code mergé mais ticket pas mis à jour | « `/archive DP-XXXX` + passer en Done ? » |
+| 🔴 À archiver | code mergé mais ticket pas mis à jour | « `/cleanup-plans DP-XXXX` + passer en Done ? » |
 
 ### 5. Présenter la liste
 
@@ -78,5 +78,5 @@ Si aucun ticket stale : afficher `✅ Pas de ticket stale au-delà du seuil de {
 ## 🔗 Commandes liées
 
 - `/morning` (lundi) — invocation automatique
-- `/archive` — archiver un ticket terminé non mis à jour
+- `/cleanup-plans` — archiver un ticket terminé non mis à jour
 - `/overview` — vue cross-projet incluant les tickets actifs

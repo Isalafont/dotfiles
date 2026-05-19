@@ -30,21 +30,24 @@ Pour chaque daily log existant, extraire :
 - Section "🏆 Réalisations du Jour" → actions accomplies
 - Section "🎫 Tickets Travaillés" → IDs + statuts + temps estimés
 - Section "📝 Notes de Travail" → décisions et leçons apprises
-- Mentions de commits, PRs, reviews dans le texte libre
+- Section "👀 Reviews du Jour" → PRs reviewées (approved / commented / changes requested)
+- Mentions de commits, PRs dans le texte libre
 - **Tags Obsidian** des tickets → agréger par feature (`#types-habilitation`, `#upload`…)
 
-Pour chaque ticket mentionné, lire sa note dans le vault (`Tickets/DP-XXXX.md` ou `Tickets/YYYY-MM/DP-XXXX/index.md`) et récupérer le champ `epic` du frontmatter. Construire la table de correspondance ticket → epic pour la semaine.
+Pour chaque ticket mentionné, lire sa note dans le vault (`Tickets/{KEY}-XXXX.md` ou `Tickets/YYYY-MM/{KEY}-XXXX/index.md`, où `{KEY}` est `DP` ou `API`) et récupérer le champ `epic` du frontmatter. Construire la table de correspondance ticket → epic pour la semaine.
 
 ### 3. Fetcher l'état actuel des tickets sur Linear
 
 Via MCP Linear, récupérer le statut actuel de chaque ticket mentionné dans la semaine
-(user ID `733836f2-a572-4acd-bd62-b70ce08c6421`, team `41f8feef-8341-44b0-9dc8-bd2cd44e514f`).
+(user ID `733836f2-a572-4acd-bd62-b70ce08c6421`) — **sans filtrer par équipe**, car les tickets
+peuvent venir des deux teams : DataPass (`DP`) et API Parteprise (`API`). Conserver l'`identifier`
+tel quel (ex: `DP-1234`, `API-6735`) dans le rapport.
 
 ### 4. Calculer les statistiques
 
 Agréger depuis les logs :
 - Tickets : complétés / en review / in progress / démarrés dans la semaine
-- Actions : commits, PRs ouvertes, PRs mergées, reviews
+- Actions : commits, PRs ouvertes, PRs mergées, reviews GitHub (total + détail par type)
 - Temps : total estimé, moyenne par ticket, ticket le plus chronophage
 - Présence : jours avec log / 5
 
@@ -94,7 +97,7 @@ xychart-beta
     bar [{lun}, {mar}, {mer}, {jeu}, {ven}]
 ```
 
-**Résumé :** {N} tickets traités · {N} complétés · {N} PRs · {N}/5 jours travaillés · {X}h estimées
+**Résumé :** {N} tickets traités · {N} complétés · {N} PRs · {N} reviews GitHub · {N}/5 jours travaillés · {X}h estimées
 
 **vs W{NN-1} :** tickets traités {N} ({↑↓=}{delta}) · complétés {N} ({↑↓=}{delta}) · PRs {N} ({↑↓=}{delta})
 
@@ -165,7 +168,28 @@ xychart-beta
 **Charge estimée :** 🟢 Légère / 🟡 Normale / 🔴 Lourde — {1-2 phrases : backlog court/long, sujets complexes ou de finition}
 ````
 
-### 6. Résumer à Isabelle
+### 7b. Cleanup batch + commit + push vault
+
+Avant de résumer, lancer le cleanup hebdomadaire des fichiers > 14j dans `.claude/plans/` :
+
+```
+/cleanup-plans --stale --yes
+```
+
+La commande `/cleanup-plans` gère elle-même son commit + push du vault pour les items archivés.
+
+Puis commit le rapport hebdomadaire généré :
+
+```bash
+cd /Users/isalafont/code/BetaGouv/note_datapass
+git add Reports/Weekly/
+git commit -m "weekly: rapport W{NN} {YYYY}"
+git pull --rebase && git push
+```
+
+Si `git pull --rebase` échoue → stop, signaler à Isabelle. Pas de `--force`.
+
+### 8. Résumer à Isabelle
 
 Afficher les stats clés (présence, tickets, PRs) et l'emplacement du fichier généré.
 

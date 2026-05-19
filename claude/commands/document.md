@@ -37,7 +37,7 @@ Quel type de document ?
 
 ## Convention préfixes et destinations
 
-| Type | Préfixe fichier `.claude/plans/` | Destination vault via `/archive` |
+| Type | Préfixe fichier `.claude/plans/` | Destination vault via `/cleanup-plans` |
 |------|----------------------------------|----------------------------------|
 | plan | `PLAN_` | `Recherche/` |
 | contexte | `CONTEXTE_` | `Recherche/` |
@@ -51,7 +51,7 @@ Quel type de document ?
 ## Modes 1–5 : Notes de travail (`.claude/plans/`)
 
 Ces notes sont créées dans `.claude/plans/` pour être travaillées en session,
-puis archivées vers le vault via `/archive {nom-du-fichier}` quand elles sont finalisées.
+puis archivées vers le vault via `/cleanup-plans {nom-du-fichier}` quand elles sont finalisées.
 
 ### Questions (séquentielles — une à la fois)
 
@@ -81,7 +81,7 @@ Afficher le nom prévu et demander confirmation avant de créer.
 # {Titre}
 
 > Type : {type} · Date : YYYY-MM-DD
-> Destination prévue : {Dossier vault} (via `/archive {nom-fichier}`)
+> Destination prévue : {Dossier vault} (via `/cleanup-plans {nom-fichier}`)
 
 ## Contexte
 
@@ -168,7 +168,7 @@ Afficher le document généré et demander confirmation :
 ```
 📄 {nom-fichier-prévu}
    → sera sauvegardé dans {chemin}
-   → archivable via `/archive {nom-fichier}` vers {dossier vault}  ← (modes 1-5 seulement)
+   → archivable via `/cleanup-plans {nom-fichier}` vers {dossier vault}  ← (modes 1-5 seulement)
 
 Aperçu :
 {contenu généré}
@@ -181,5 +181,5 @@ Après sauvegarde :
 ```
 ✅ {nom-fichier} créé
 📁 {chemin complet}
-💡 Pour archiver vers le vault : /archive {nom-fichier}  ← (modes 1-5 seulement)
+💡 Pour archiver vers le vault : /cleanup-plans {nom-fichier}  ← (modes 1-5 seulement)
 ```
