@@ -204,11 +204,25 @@ Description :
 ✅ Créer ce ticket ? (yes/no)
 ```
 
+### Étape 4bis : Choix de l'équipe
+
+Avant de créer, demander si pas déjà précisé :
+
+```
+Quelle équipe Linear ?
+  1. DataPass (key DP)        — team 41f8feef-8341-44b0-9dc8-bd2cd44e514f
+  2. API Parteprise (key API) — team 06f4c81a-3435-400e-a2a7-68807d6cc14b
+```
+
+Par défaut : DataPass (la majorité des tickets DataPass restent dans cette équipe).
+Choisir API Parteprise pour les tickets liés au projet « Api Parteprise : Mise en conformité »
+ou tout sujet API Entreprise / API Particulier.
+
 ### Étape 5 : Créer via Linear MCP
 
 Si confirmation, créer le ticket via les outils MCP `linear-server` avec :
 - `title` : [Réponse Q2]
-- `teamId` : `41f8feef-8341-44b0-9dc8-bd2cd44e514f` (DataPass)
+- `teamId` : ID de l'équipe choisie à l'étape 4bis
 - `description` : [Description formatée markdown]
 - `priority` : selon mapping
 - `labelIds` : selon labels choisis
@@ -222,15 +236,13 @@ Si confirmation, créer le ticket via les outils MCP `linear-server` avec :
 
 ### Étape 6 : Confirmer
 
-Afficher l'URL du ticket créé :
+Afficher l'URL du ticket créé (l'`identifier` retourné par Linear donne le bon préfixe `DP-` ou `API-`) :
 
 ```
 ✅ Ticket créé avec succès !
 
-🎫 DP-XXXX : [Titre]
-🔗 https://linear.app/datapass/issue/DP-XXXX
-
-📝 Ajouté au suivi : ~/assistant/projets/datapass/tickets.md
+🎫 {identifier} : [Titre]              # ex: DP-1234 ou API-6740
+🔗 {url retourné par Linear}
 ```
 
 ## Exemples d'Utilisation
