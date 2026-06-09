@@ -39,7 +39,6 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "OPUS",
   "hooks": {
     "UserPromptSubmit": [
       {
