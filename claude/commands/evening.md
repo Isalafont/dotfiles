@@ -140,17 +140,20 @@ Si elle existe :
 | [[YYYY-MM-DD]] | [[DP-XXXX]], [[DP-YYYY]] |
 ```
 
-### 7. Mettre à jour tickets.md (seulement si tickets travaillés)
+### 7. Structurer les sections de tickets du daily selon le template
 
-Si aucun ticket Linear travaillé aujourd'hui : **ne pas toucher au fichier**.
+`/Users/isalafont/code/BetaGouv/note_datapass/Suivi/tickets.md` est un **template de référence en lecture seule** : il fournit la structure des sections (En Cours / À Faire / En Review / Terminés / Notes de Sprint) et le format d'entrée d'un ticket.
 
-Si des tickets ont été travaillés :
-- Lire `/Users/isalafont/code/BetaGouv/note_datapass/Suivi/tickets.md` — c'est un **template de référence**, ne jamais le modifier
-- Utiliser sa structure comme modèle pour ajouter les entrées réelles dans les bonnes sections
-- Déplacer les tickets terminés vers "Terminés (Récents)"
+- **Ne JAMAIS modifier `Suivi/tickets.md`.** C'est un modèle, pas un fichier de suivi vivant.
+- Lire `tickets.md` uniquement pour reprendre sa structure et son format d'entrée.
+- Appliquer cette structure aux sections de tickets **du daily du jour** (étapes 4 et 5) : mêmes intitulés de sections, même format d'entrée (`### [[DP-XXXX]] … Statut / Priorité / Branche / Notes`).
+- Le suivi réel vit dans les daily logs, jamais dans `tickets.md`.
+
+**Appliquer ces mises à jour de suivi DANS le daily du jour** (jamais dans `tickets.md`) :
+- Déplacer les tickets terminés vers une section "✅ Done" / "Terminés (Récents)"
 - Mettre à jour le statut des tickets en cours
 - Ajouter les nouvelles infos (PR, blocages, décisions)
-- Mettre à jour la date en bas du fichier (`*Dernière mise à jour : YYYY-MM-DD*`)
+- Dater chaque mise à jour via le daily lui-même (le daily EST daté), pas via une ligne `*Dernière mise à jour*`
 
 ### 7b. Détecter les PRs mergées du jour et proposer l'archive
 
@@ -177,11 +180,13 @@ S'il y a au moins un ticket mergé non archivé, **proposer** à Isabelle :
 
 ### 7c. Commit + push vault
 
-Après toutes les modifs du jour (daily log, tickets travaillés, tickets.md, notes epic, éventuels archives) :
+Après toutes les modifs du jour (daily log, notes de tickets, notes epic, éventuels archives) :
+
+⚠️ Ne **jamais** stager `Suivi/tickets.md` — c'est un template en lecture seule (cf. étape 7).
 
 ```bash
 cd /Users/isalafont/code/BetaGouv/note_datapass
-git add Journal/ Tickets/ Epics/ Suivi/ Documentation/ Recherche/
+git add Journal/ Tickets/ Epics/ Documentation/ Recherche/
 git commit -m "evening: clôture daily YYYY-MM-DD + {N} ticket(s) travaillé(s)"
 git pull --rebase && git push
 ```
@@ -202,7 +207,7 @@ Afficher :
 ## ⚠️ Règles
 
 - ✅ Toujours remplir "Réalisations du Jour" — c'est le marqueur de clôture utilisé par /handover et /recap
-- ✅ Toujours mettre à jour tickets.md
+- ❌ Ne jamais modifier `Suivi/tickets.md` — c'est un template de structure en lecture seule ; le suivi vit dans le daily
 - ✅ Être factuel — ce qui a été fait, pas ce qui était prévu
 - ✅ Référencer les IDs Linear dans chaque entrée
 - ❌ Ne pas réécrire les sections déjà remplies par /handover ou /recap dans les Notes de Travail

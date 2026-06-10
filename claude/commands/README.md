@@ -56,7 +56,7 @@ Agrège : PRs DataPass ouvertes (à toi / en attente / Dependabot), tickets Line
 
 ### `/evening`
 
-Clôture la journée : met à jour le daily log (réalisations, tickets travaillés, priorités lendemain), appende une ligne dans la section "Sessions de travail" de chaque ticket travaillé, met à jour le statut dans la note epic. **Détecte aussi les PRs mergées du jour** non encore archivées dans le vault et propose `/cleanup-plans DP-XXXX` pour chacune. **Commit + push automatique du vault** en fin de routine (étape 7c, avec `git pull --rebase` avant push).
+Clôture la journée : met à jour le daily log (réalisations, tickets travaillés, priorités lendemain), en reprenant la structure du template `Suivi/tickets.md` (lecture seule — **jamais modifié**). Appende une ligne dans la section "Sessions de travail" de chaque ticket travaillé, met à jour le statut dans la note epic. **Détecte aussi les PRs mergées du jour** non encore archivées dans le vault et propose `/cleanup-plans DP-XXXX` pour chacune. **Commit + push automatique du vault** en fin de routine (étape 7c, avec `git pull --rebase` avant push).
 
 ---
 
