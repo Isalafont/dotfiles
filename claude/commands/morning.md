@@ -28,9 +28,11 @@ Extraire :
 ### 2. Fetcher les tickets Linear assignés
 
 Via MCP Linear, récupérer les issues assignées à Isabelle
-(user ID `733836f2-a572-4acd-bd62-b70ce08c6421`)
-dans l'équipe DataPass (ID `41f8feef-8341-44b0-9dc8-bd2cd44e514f`).
+(user ID `733836f2-a572-4acd-bd62-b70ce08c6421`) **sans filtrer par équipe** —
+les tickets peuvent être dans DataPass (key `DP`) ou API Parteprise (key `API`).
 Filtrer : statuts In Progress + Todo, triés par priorité.
+
+Conserver le `identifier` Linear (ex: `DP-1234` ou `API-6735`) tel quel dans tout le daily log.
 
 ### 3. Évaluer si un contexte suffisant existe
 
@@ -44,11 +46,35 @@ Poser une ou deux questions pour orienter la journée :
 - « Sur quel ticket ou sujet veux-tu travailler aujourd'hui ? »
 - « Y a-t-il un contexte particulier à charger ? »
 
+### 3b. Détecter automatiquement le livrable du jour
+
+Sans poser de question, identifier **un seul ticket principal** pour la journée.
+
+**Règle de sélection :**
+1. Parmi les tickets In Progress assignés à Isabelle
+2. Exclure les tickets bloqués sur une action externe (en attente de review quelqu'un d'autre, aucune action possible aujourd'hui)
+3. Prendre le ticket avec la **priorité Linear la plus haute**
+4. En cas d'égalité : prendre le **plus ancien** In Progress
+
+**Déduire une définition de done minimale** d'après le titre et l'état du ticket :
+- Titre contient "Audit" ou "audit" → *"{N} pages/composants audités"*
+- Titre contient "Bug" ou "Fix" → *"Fix implémenté, tests verts, PR créée"*
+- Titre contient "Review" ou ticket en statut review → *"Review terminée, commentaires postés"*
+- Défaut → *"Une action concrète et tracée réalisée sur ce ticket"*
+
+### 3c. Détecter le méta-travail et marquer la timebox
+
+Un ticket est **méta-travail** si son titre contient l'un de ces mots-clés (casse ignorée) :
+`skill`, `plugin`, `claude code`, `commande`, `outil`, `tooling`, `prompting`, `guide`, `dotfile`
+— ou s'il n'est lié à aucun livrable utilisateur DataPass direct (pas de vue, pas de modèle, pas de bug prod).
+
+Si un tel ticket est In Progress : noter `⏱ Timebox 30 min` à côté dans la liste des tickets du daily.
+
 ### 4. Créer le daily log du jour
 
 Si le fichier `/Users/isalafont/code/BetaGouv/note_datapass/Journal/Daily/YYYY-MM-DD.md` n'existe pas encore, le créer.
 
-**Pour chaque ticket en cours**, lire sa note dans le vault (`Tickets/DP-XXXX.md` ou `Tickets/YYYY-MM/DP-XXXX/index.md`) et récupérer le champ `epic` du frontmatter. S'il est renseigné, ajouter `(epic: [[{epic-id}]])` après le titre dans la liste des tickets du daily log.
+**Pour chaque ticket en cours**, lire sa note dans le vault (`Tickets/{KEY}-XXXX.md` ou `Tickets/YYYY-MM/{KEY}-XXXX/index.md`, où `{KEY}` est `DP` ou `API`) et récupérer le champ `epic` du frontmatter. S'il est renseigné, ajouter `(epic: [[{epic-id}]])` après le titre dans la liste des tickets du daily log.
 
 **Déterminer les tags Obsidian** depuis les tickets en cours :
 - Features actives → `#types-habilitation`, `#upload`, `#accessibilite`…
@@ -67,6 +93,11 @@ tags: [tag-feature, tag-domaine]
 
 # YYYY-MM-DD - {Jour de la semaine}
 #{tag-feature} #{tag-domaine}
+
+## 🎯 Livrable du jour
+
+> **[[DP-XXXX]]** — {Titre court du ticket principal}
+> Done = {définition de done minimale déduite automatiquement}
 
 ## 📥 Contexte de la veille
 

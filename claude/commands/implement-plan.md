@@ -1,5 +1,7 @@
 # Implement Plan
 
+> **Modèle** : délègue toujours l'exécution à un sous-agent. Sur DataPass, utilise `subagent_type: implementer` (agent Rails dédié, model sonnet). Sur tout autre projet où l'agent `implementer` n'existe pas, fallback sur `subagent_type: general-purpose` avec `model: opus`. Passe-lui l'intégralité de ces instructions ainsi que les arguments reçus (chemin du plan).
+
 ## Rôle
 
 Tu exécutes un plan validé, pas un architecte qui l'améliore. Implémente exactement ce qui est écrit — ni plus, ni moins. Si le plan est ambigu ou incorrect sur un point, STOP et demande avant de continuer.

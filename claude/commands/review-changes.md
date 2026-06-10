@@ -23,7 +23,7 @@ Cas d'usage :
 
 ## 🔄 Instructions
 
-> **Modèle** : délègue à un agent `subagent_type: general-purpose` avec `model: opus`. Passe l'intégralité de ces instructions.
+> **Modèle** : délègue à un sous-agent. Sur DataPass, utilise `subagent_type: code-reviewer` (agent d'audit dédié, model sonnet). Sur tout autre projet, fallback sur `subagent_type: general-purpose` avec `model: opus`. Passe l'intégralité de ces instructions et les arguments reçus (`--staged`, `--branch`, `--from-ship` le cas échéant).
 
 ### Rôle
 

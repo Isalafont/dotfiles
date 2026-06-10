@@ -33,7 +33,10 @@ Outputs : `context.md` + `plan.md` + commits + PR ouverte.
 [ ] 1. SETUP      → Récupère le ticket, initialise la session
 [ ] 2. UNDERSTAND → Clarifie le besoin, explore le codebase
 [ ] 3. PLAN       → Génère le plan, attend l'approbation
-[ ] 4. IMPLEMENT  → Code la feature étape par étape
+[ ] 4. IMPLEMENT  → Code la feature étape par étape (agent implementer)
+[ ] 4b. REVIEW    → code-reviewer → implementer applique (boucle, max 2 tours)
+[ ] 4c. A11Y      → rgaa-auditor → implementer applique (bloquant + majeur)
+[ ] 4d. STOP      → Récap de la chaîne, attend « Go » (seul arrêt humain)
 [ ] 5. SHIP       → Commit, push, ouvre la PR
 [ ] 6. NEXT       → Met à jour Linear, résumé final
 ```
@@ -203,16 +206,59 @@ Lancer `bundle exec rubocop` **à la fin de chaque phase** (pas après chaque fi
 
 ---
 
-## Phase 4b : REVIEW
+## Phase 4b : REVIEW → APPLY (boucle, max 2 tours)
 
-Avant de pousser, lance `/review-changes --from-ship` en sous-agent pour auditer la diff complète de la branche.
+Chaîne automatique après l'implémentation. **Aucun arrêt humain ici** : le seul STOP est avant la PR (Phase 5).
 
-**Selon le verdict** :
-- ✅ **Prête à commit** — résumé en une ligne, passer en Phase 5.
-- ⚠️ **Retouches recommandées** — afficher le rapport à Isabelle, demander explicitement « Je passe en SHIP malgré les suggestions ou je corrige avant ? »
-- 🚫 **Bloqué** — afficher le rapport, **stopper le workflow**. Mettre la session en phase `review-pending`. Reprendre via `/replan` ou en corrigeant manuellement avant de relancer `/ship`.
+**Boucle, max 2 tours :**
 
-❌ Ne jamais sauter cette phase. Elle attrape les régressions silencieuses, les couplages implicites, et les violations RGAA/sécurité que les tests verts ne voient pas.
+1. **Review** — spawne le sous-agent `code-reviewer` (`subagent_type: code-reviewer`) sur la diff complète de la branche. Il retourne un verdict ✅/⚠️/🚫 avec bloquants chiffrés.
+2. **Évalue le verdict :**
+   - ✅ **Prête** — sortir de la boucle, passer en Phase 4c.
+   - ⚠️ / 🚫 — passer à l'étape 3 (apply).
+3. **Apply** — spawne `implementer` (`subagent_type: implementer`) avec le rapport reviewer. Il applique **uniquement** les bloquants 🚫 + les ⚠️ retenus, relance les tests ciblés, ne sort pas du périmètre du plan.
+4. **Re-review** — relance l'étape 1.
+   - Si ✅ → sortir.
+   - Sinon, **2ᵉ tour maximum**. Au bout du 2ᵉ tour encore non ✅ : **stopper le workflow**, session en phase `review-pending`, afficher le rapport restant à Isabelle. Reprendre via `/replan` ou correction manuelle.
+
+❌ Ne jamais sauter cette phase. Elle attrape les régressions silencieuses, les couplages implicites, et les violations sécurité que les tests verts ne voient pas.
+
+---
+
+## Phase 4c : A11Y AUDIT → APPLY
+
+Si la diff touche des **vues, composants ou formulaires** (`app/views/`, `app/components/`, `.erb`) :
+
+1. **Audit** — spawne `rgaa-auditor` (`subagent_type: rgaa-auditor`) sur les fichiers front touchés. Il écrit un rapport priorisé dans `.claude/audit/`.
+2. **Apply** — spawne `implementer` avec le rapport a11y. Il applique les corrections de niveau **bloquant ET majeur** (laisse les mineurs en suggestion dans le résumé final), relance les tests ciblés.
+3. **Re-vérifie** — si l'audit avait des bloquants, relance `rgaa-auditor` une fois pour confirmer la résolution.
+
+Si la diff ne touche aucun fichier front : sauter cette phase, le noter dans le résumé.
+
+❌ DataPass est un service public : la conformité RGAA est une obligation légale. Ne pas sauter l'audit quand du front est touché.
+
+---
+
+## Phase 4d : STOP HUMAIN (seul point d'arrêt)
+
+Avant tout commit/push, présente à Isabelle le récap de la chaîne :
+
+```
+🧪 Chaîne review/a11y terminée pour DP-XXXX
+
+Review  : N tour(s) — verdict final ✅
+  Appliqué : [liste des corrections]
+  Écarté   : [liste + pourquoi]
+A11y    : [audité / sauté car pas de front]
+  Appliqué (bloquant+majeur) : [liste]
+  Mineurs laissés en suggestion : [liste]
+
+Diff finale : X fichiers. Tests : ✅  Rubocop : ✅
+
+Je passe en SHIP (commit/push/PR) ? « Go » / feedback.
+```
+
+**Attends « Go » avant la Phase 5.**
 
 ---
 
@@ -281,7 +327,7 @@ Crée ce fichier au début de chaque nouvelle session. **Mets-le à jour à chaq
 ---
 linear_id: DP-1234
 title: "Feature title"
-phase: understand|plan|implement|ship|next|completed
+phase: understand|plan|implement|review|review-pending|a11y|ship|next|completed
 
 clarification:
   questions_answered:

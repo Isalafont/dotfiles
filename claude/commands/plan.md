@@ -1,5 +1,7 @@
 # Plan
 
+> **Modèle** : délègue toujours l'exécution à un agent avec `subagent_type: general-purpose` et `model: opus`. Passe-lui l'intégralité de ces instructions ainsi que les arguments reçus.
+
 > 📖 Exemples, critères de succès et commandes liées : `~/.claude/plan-guide.md`
 
 ## Rôle

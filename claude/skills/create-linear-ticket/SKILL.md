@@ -77,17 +77,18 @@ Je vais vous poser 10 questions pour créer un ticket de qualité :
 
 #### Q4 : Acceptance Criteria (3-5 items)
 
-**Format :**
-- Chaque critère doit être mesurable et testable
-- Commencer par un verbe d'action
-- Être spécifique
+**Format de rédaction (façon Natalia Bertel) :**
+- Critères présentés en **tableau** `| CA | Description | État |` (cf. Étape 3)
+- Chaque critère mesurable et testable, idéalement en Gherkin :
+  « Étant donné … quand … alors … »
+- Lier chaque CA à une règle de gestion (RG) quand pertinent
 
 **Exemples :**
-- Bouton "Exporter CSV" visible sur page liste
-- Export contient : ID, date, demandeur, statut
-- Fichier nommé : `habilitations_YYYY-MM-DD.csv`
+- CA-1 : Étant donné que je suis sur la page liste, quand je clique sur « Exporter CSV », alors un fichier se télécharge (RG-1)
+- CA-2 : Étant donné un export généré, quand je l'ouvre, alors il contient ID, date, demandeur, statut (RG-2)
 
 **Question :** Quels sont les critères d'acceptation ? (listez 3 à 5)
+Optionnel : des **règles de gestion** (RG) à formaliser à part ?
 
 ---
 
@@ -164,18 +165,27 @@ Je vais vous poser 10 questions pour créer un ticket de qualité :
 
 ### Étape 3 : Formater le Ticket
 
-Générer la description selon le template :
+Générer la description au **format tableau Natalia Bertel** :
 
 ```markdown
 ## 📋 Context
 
 [Réponse Q3]
 
-## ✅ Acceptance Criteria
+## Règles de gestion
 
-- [ ] [Critère 1 de Q4]
-- [ ] [Critère 2 de Q4]
-- [ ] [Critère 3 de Q4]
+| **RG** | **Description** | **État** |
+| -- | -- | -- |
+| RG-1 | [Règle 1, si fournie en Q4] | ✅ OK &#10;❌ KO |
+| RG-2 | [Règle 2] | ✅ OK &#10;❌ KO |
+
+## Critères d’acceptation
+
+| **CA** | **Description** | **État + RG** |
+| -- | -- | -- |
+| CA-1 | [Critère 1 de Q4, idéalement en Gherkin] | ✅ OK &#10;❌ KO &#10;RG - 1 |
+| CA-2 | [Critère 2] | ✅ OK &#10;❌ KO &#10;RG - 2 |
+| CA-3 | [Critère 3] | ✅ OK &#10;❌ KO |
 
 ## 🔧 Technical Notes
 
@@ -185,6 +195,12 @@ Générer la description selon le template :
 
 [Réponse Q6]
 ```
+
+**Notes de format :**
+- `&#10;` = saut de ligne dans une cellule de tableau Markdown.
+- La colonne « État » garde `✅ OK` / `❌ KO` comme cases à cocher visuelles, à pointer en review.
+- Omettre la section « Règles de gestion » si aucune RG n'a été fournie ; dans ce cas la 3ᵉ colonne des CA s'intitule juste « **État** ».
+- Apostrophe typographique (’) et guillemets français (« ») dans tout le contenu.
 
 ### Étape 4 : Validation
 
