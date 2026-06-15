@@ -39,6 +39,7 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "opus",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -102,7 +103,10 @@
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
     "ruby-lsp@claude-plugins-official": true,
-    "accessibility@rgaa-toolkit": true
+    "accessibility@rgaa-toolkit": true,
+    "superpowers@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-code-plugins": {
@@ -114,7 +118,7 @@
     "rgaa-toolkit": {
       "source": {
         "source": "directory",
-        "path": "/Users/isalafont/.claude/skills/rgaa-dev"
+        "path": "/Users/isalafont/code/Isalafont/dotfiles/claude/marketplaces/rgaa-dev"
       }
     }
   },
