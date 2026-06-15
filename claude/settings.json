@@ -107,7 +107,8 @@
     "superpowers@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
-    "layered-rails@palkan-skills": true
+    "layered-rails@palkan-skills": true,
+    "ralph-loop@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-code-plugins": {
