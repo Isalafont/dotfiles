@@ -106,7 +106,8 @@
     "accessibility@rgaa-toolkit": true,
     "superpowers@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true,
+    "layered-rails@palkan-skills": true
   },
   "extraKnownMarketplaces": {
     "claude-code-plugins": {
@@ -119,6 +120,12 @@
       "source": {
         "source": "directory",
         "path": "/Users/isalafont/code/Isalafont/dotfiles/claude/marketplaces/rgaa-dev"
+      }
+    },
+    "palkan-skills": {
+      "source": {
+        "source": "github",
+        "repo": "palkan/skills"
       }
     }
   },
