@@ -38,6 +38,28 @@ Tout `~/.claude` est symlinké vers `dotfiles/claude/` :
 
 > ❌ Ne jamais y travailler, ni push `master` : risque de divergence sur le **même** dépôt GitHub que `dotfiles`. **Candidat à archiver/supprimer** une fois vérifié qu'il ne contient rien d'unique.
 
+## Submodule `claude/skills/rgaa-dev`
+
+Le skill d'accessibilité vit dans son **propre dépôt** (`git@github.com:Isalafont/claude-skill-rgaa-dev.git`), déclaré ici comme **submodule git** (`.gitmodules`). Ce dépôt alimente aussi le marketplace `rgaa-toolkit` (plugin `accessibility`).
+
+Conséquence : `dotfiles` ne stocke pas le contenu du skill, seulement un **pointeur de commit** (gitlink). Le mettre à jour se fait **en deux temps** :
+
+```bash
+# 1. Dans le sous-repo : modifier, commit, push
+cd claude/skills/rgaa-dev
+# … éditer …
+git commit -am "…" && git push
+
+# 2. Dans dotfiles : enregistrer le nouveau pointeur
+cd -
+git add claude/skills/rgaa-dev
+git commit -m "Pointe rgaa-dev sur <version>"
+```
+
+Un `git status` qui montre `M claude/skills/rgaa-dev` signifie seulement que le pointeur est en retard sur le HEAD du sous-repo — pas que des fichiers de `dotfiles` ont changé. Un hook automatise l'étape 2 (cf. `claude/hooks/`).
+
+Cloner `dotfiles` à neuf : `git clone --recurse-submodules`, ou après coup `git submodule update --init`.
+
 ---
 
-_Dernière mise à jour : 2026-06-09._
+_Dernière mise à jour : 2026-06-15._

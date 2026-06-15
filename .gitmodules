@@ -1,0 +1,3 @@
+[submodule "claude/skills/rgaa-dev"]
+	path = claude/skills/rgaa-dev
+	url = git@github.com:Isalafont/claude-skill-rgaa-dev.git
