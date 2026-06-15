@@ -1,11 +1,11 @@
-# Skill Creator
+# Skill Scaffold
 
-Skill pour créer de nouveaux skills Claude Code conformes aux standards officiels Anthropic.
+Skill pour générer le squelette de nouveaux skills Claude Code conformes aux standards officiels Anthropic. Pour itérer et mesurer la performance d’un skill via des évaluations, utiliser plutôt `skill-creator` (officiel Anthropic).
 
 ## Structure du Skill
 
 ```
-skill-creator/
+skill-scaffold/
 ├── SKILL.md              # Instructions principales
 ├── templates/            # Templates de fichiers
 │   ├── SKILL.md.template
@@ -23,13 +23,13 @@ skill-creator/
 
 ```bash
 # Créer un skill task
-/skill-creator deploy-app task
+/skill-scaffold deploy-app task
 
 # Créer un skill reference
-/skill-creator api-conventions reference
+/skill-scaffold api-conventions reference
 
 # Créer un skill wizard
-/skill-creator component-creation wizard
+/skill-scaffold component-creation wizard
 ```
 
 ### Invocation Automatique par Claude
@@ -100,8 +100,8 @@ Skill qui guide l'utilisateur étape par étape.
 
 ## Métadonnées
 
-- **name**: `skill-creator`
-- **description**: Create a new Claude Code skill following Anthropic's official standards and best practices
+- **name**: `skill-scaffold`
+- **description**: Génère rapidement le squelette d’un nouveau skill Claude Code selon les conventions FR
 - **argument-hint**: `[skill-name] [skill-type]`
 - **allowed-tools**: `Read, Write, Bash(mkdir *)`
 
@@ -113,13 +113,6 @@ Skill qui guide l'utilisateur étape par étape.
 - Templates réutilisables
 - Checklists de validation
 - Documentation complète
-
-## Ressources Complémentaires
-
-Pour une documentation complète sur les skills :
-- **Documentation détaillée** : `~/assistant/systeme/claude-skills/`
-- **Standards Anthropic** : `~/assistant/systeme/claude-skills/standards.md`
-- **Exemples** : `~/assistant/systeme/claude-skills/examples/`
 
 ## Références Officielles
 

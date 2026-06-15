@@ -1,13 +1,13 @@
 ---
-name: skill-creator
-description: Create a new Claude Code skill following Anthropic's official standards and best practices
+name: skill-scaffold
+description: Génère rapidement le squelette d’un nouveau skill Claude Code (arborescence, frontmatter, checklist de conformité) selon les conventions FR. Pour itérer et mesurer la performance d’un skill via des évaluations, utiliser plutôt skill-creator (officiel Anthropic).
 argument-hint: [skill-name] [skill-type]
 allowed-tools: Read, Write, Bash(mkdir *)
 ---
 
-# Skill Creator
+# Skill Scaffold
 
-Crée un nouveau skill Claude Code conforme aux standards officiels Anthropic.
+Génère le squelette d’un nouveau skill Claude Code conforme aux standards officiels Anthropic.
 
 ## Quand Utiliser ce Skill
 
@@ -187,10 +187,9 @@ Create a new component: $0 named $1
 ## Ressources
 
 Pour plus de détails, consulter :
-- **Documentation complète** : `~/assistant/systeme/claude-skills/`
-- **Standards Anthropic** : `~/assistant/systeme/claude-skills/standards.md`
-- **Templates** : `~/.claude/skills/skill-creator/templates/`
-- **Checklists** : `~/.claude/skills/skill-creator/checklists/`
+- **Templates** : `~/.claude/skills/skill-scaffold/templates/`
+- **Checklists** : `~/.claude/skills/skill-scaffold/checklists/`
+- **Documentation Skills officielle** : https://code.claude.com/docs/en/skills.md
 
 ## Références Officielles
 
