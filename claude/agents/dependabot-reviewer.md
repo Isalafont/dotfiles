@@ -35,6 +35,8 @@ bundle install
 
 Si la DB de test n'existe pas, créer : `RAILS_ENV=test bundle exec rails db:create db:schema:load`.
 
+**Important** : ne travaille que dans le worktree `dependabot-<N>`. Ne checkout jamais la branche dependabot dans le repo principal — celui-ci doit rester sur `develop` pendant toute la review.
+
 ### 3. Analyse des bumps
 
 Pour chaque gem, vérifie les release notes / changelog (via gh ou WebFetch sur les releases GitHub) et classifie :
@@ -119,6 +121,13 @@ Produis un récap structuré pour l'utilisateur :
 - `Apply rubocop autocorrect for new cops` pour l'autocorrect global
 - `Revert params.expect autocorrect for Hash params` pour les contre-corrections
 - `Update brakeman ignore fingerprints after <refactor>` pour la sync brakeman
+
+### 10. Nettoyage
+
+Après le rapport final, laisse l'environnement propre :
+- Quoi qu'il arrive, termine avec le repo principal sur `develop` : lance toujours `git checkout develop` depuis le repo principal en fin de run, même si le HEAD semble déjà ailleurs (ne le laisse jamais sur la branche dependabot ni sur la branche de feature qui était cochée avant la review).
+- Retire le worktree de review : `git worktree remove --force dependabot-<N>`.
+- Ne supprime jamais les autres worktrees (`dp-*` ou worktrees de feature).
 
 ## Règles importantes
 
