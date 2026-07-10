@@ -25,6 +25,14 @@ Extraire :
 - Les priorités identifiées (section "Préparation du Lendemain")
 - Les blocages éventuels
 
+### 1b. Reporter la section vacances (active jusqu’au 2026-07-17)
+
+Si le dernier daily log contient une section « 🏖 À clôturer avant les vacances » :
+- La recopier dans le nouveau daily, juste après « 📥 Contexte de la veille », en ne gardant que les items **non cochés** (`- [ ]`) et les sous-titres qui en contiennent encore.
+- Mettre à jour le compteur de jours ouvrés restants avant le départ (départ le vendredi 2026-07-17 ; mercredis off, jeudi 9 juillet indisponible).
+- Signaler dans le résumé du matin les items bloquants restants.
+- Ne rien reporter si tous les items sont cochés. Supprimer cette étape 1b au retour de vacances (mi-août – début septembre).
+
 ### 2. Fetcher les tickets Linear assignés
 
 Via MCP Linear, récupérer les issues assignées à Isabelle
