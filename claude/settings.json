@@ -161,5 +161,33 @@
   "showThinkingSummaries": true,
   "theme": "auto",
   "verbose": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "autoMode": {
+    "environment": [
+      "### Org-wide",
+      "**Organization**: Etalab / BetaGouv (github.com/etalab) — inferred from this repo's remote and CLAUDE.md project table",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: PUBLIC — etalab/data_pass on GitHub (confirmed via gh)",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: Rails encrypted credentials (config/master.key, config/credentials/production.key, config/credentials/staging.key, config/credentials/sandbox.key — all gitignored); .env* files gitignored except .env*.erb templates; .deploy_token gitignored",
+      "**Default / protected branches**: develop (default branch; protected). Ruleset \"Main branch no push\" active on this repo — treat main as protected/push-blocked even though it's not separately listed",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Source control**: The trusted repo (etalab/data_pass) and its origin remote only (github.com:etalab/data_pass.git) — no additional orgs configured",
+      "**Trusted internal domains**: datapass.api.gouv.fr and its sandbox/staging subdomains (sandbox.datapass.api.gouv.fr, staging.datapass.api.gouv.fr) — referenced repeatedly in CLAUDE.md as this project's own environments",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: ProConnect (identity provider), API Géo, INSEE API (per .env.example) — all scoped to this project's integrations",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: config/master.key, config/credentials/{production,staging,sandbox}.key, .env* (non-template), .deploy_token, tmp/local_secret.txt — credentials only, share with no one outside deploy tooling; app/interactors/developer/regenerate_webhook_secret.rb and its spec handle webhook secrets — treat as sensitive code path",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any host/namespace containing prod or production as a whole segment — includes this repo's own production.key credential, and DGFIP CGU documents under public/cgus/dgfip/*_prod_* and app/views/static_pages/cgu_api_impot_particulier_prod.html.erb (these are static legal documents, not deploy targets, but named per the prod heuristic)",
+      "**Protected deployment namespaces / environments**: production Rails environment (config/credentials/production.key) and staging (config/credentials/staging.key) — inferred from this repo's own credential files",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries prod or production as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development — Rails/Ruby web app (DataPass), per CLAUDE.md project table and routine skills (/morning, /evening, /weekly, /retro, /po-brief)",
+      "**Trusted repo**: /Users/isalafont/code/BetaGouv/Etalab/data_pass and its origin remote (github.com:etalab/data_pass.git) — PUBLIC repo, so only this repo's own work belongs in commits/pushes here; content ported from elsewhere is not its own work",
+      "**Org-specific CLIs**: None configured — project tooling is make, bundle, rails, rubocop, cucumber (all standard for this stack)",
+      "Routine under DataPass worktrees (dp-*, data_pass/<name>) is expected per CLAUDE.md worktree conventions"
+    ]
+  }
 }
