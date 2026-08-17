@@ -74,6 +74,16 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/tidewave-mcp-register.sh",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "SessionStart": [
