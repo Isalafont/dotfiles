@@ -60,6 +60,22 @@
             "type": "command",
             "command": "bash ~/.claude/hooks/bash-tool-call.sh",
             "timeout": 3
+          },
+          {
+            "type": "command",
+            "if": "Bash(git push*)",
+            "command": "~/.claude/hooks/datapass-pre-push.sh",
+            "timeout": 600,
+            "statusMessage": "Vérifs pré-push : rubocop, rspec, standardjs…"
+          },
+          {
+            "type": "command",
+            "if": "Bash(git push*)",
+            "command": "~/.claude/hooks/datapass-pre-push-cucumber.sh",
+            "timeout": 1800,
+            "asyncRewake": true,
+            "rewakeSummary": "Cucumber e2e a échoué après le push",
+            "statusMessage": "Cucumber e2e en fond…"
           }
         ]
       }
