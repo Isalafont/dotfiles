@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-project_dir="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+# Ne s’exécuter que sur un vrai `git push` visant data_pass : le garde partagé
+# lit la commande depuis le payload JSON sur stdin et sort si ce n’en est pas un.
+# shellcheck source=datapass-push-guard.sh
+source "$(dirname "${BASH_SOURCE[0]}")/datapass-push-guard.sh"
 
-origin="$(git -C "$project_dir" remote get-url origin 2>/dev/null || true)"
-case "$origin" in
-  *etalab/data_pass*) : ;;
-  *) exit 0 ;;
-esac
-
-cd "$project_dir" || { echo "pré-push : impossible d’accéder à $project_dir" >&2; exit 2; }
+cd "$DATAPASS_PROJECT_DIR" || {
+  echo "pré-push : impossible d’accéder à $DATAPASS_PROJECT_DIR" >&2
+  exit 2
+}
 
 run_step() {
   step_label="$1"; shift
