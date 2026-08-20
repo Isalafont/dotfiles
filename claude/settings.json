@@ -6,11 +6,9 @@
   "permissions": {
     "allow": [
       "Read(**/note_datapass/**)",
-      "Write(**/note_datapass/**)",
       "Edit(**/note_datapass/**)",
       "Bash(mkdir -p /Users/isalafont/code/BetaGouv/note_datapass/**)",
       "Read(/Users/isalafont/.claude/projects/**/memory/**)",
-      "Write(/Users/isalafont/.claude/projects/**/memory/**)",
       "Edit(/Users/isalafont/.claude/projects/**/memory/**)"
     ],
     "deny": [
@@ -39,7 +37,6 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -60,22 +57,6 @@
             "type": "command",
             "command": "bash ~/.claude/hooks/bash-tool-call.sh",
             "timeout": 3
-          },
-          {
-            "type": "command",
-            "if": "Bash(git push*)",
-            "command": "~/.claude/hooks/datapass-pre-push.sh",
-            "timeout": 600,
-            "statusMessage": "Vérifs pré-push : rubocop, rspec, standardjs…"
-          },
-          {
-            "type": "command",
-            "if": "Bash(git push*)",
-            "command": "~/.claude/hooks/datapass-pre-push-cucumber.sh",
-            "timeout": 1800,
-            "asyncRewake": true,
-            "rewakeSummary": "Cucumber e2e a échoué après le push",
-            "statusMessage": "Cucumber e2e en fond…"
           }
         ]
       }
@@ -189,5 +170,6 @@
       "**Org-specific CLIs**: None configured — project tooling is make, bundle, rails, rubocop, cucumber (all standard for this stack)",
       "Routine under DataPass worktrees (dp-*, data_pass/<name>) is expected per CLAUDE.md worktree conventions"
     ]
-  }
+  },
+  "agentPushNotifEnabled": true
 }
