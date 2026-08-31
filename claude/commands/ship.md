@@ -193,7 +193,12 @@ Si Linear MCP disponible :
 
 Lancer `bundle exec rubocop` **à la fin de chaque phase** (pas après chaque fichier).
 
-Pour chaque étape : code → tests ciblés (`bundle exec rspec spec/path/to/file_spec.rb`) → corrige les échecs avant de continuer, et mets à jour le statut de la session (`pending → in_progress → done`).
+**Pour chaque étape, en TDD :** test d'abord → vérifie qu'il échoue → code minimal
+→ tests ciblés au vert (`bundle exec rspec spec/path/to/file_spec.rb`) → refactor.
+Puis mets à jour le statut de la session (`pending → in_progress → done`).
+
+Un test qui passe avant d'avoir écrit le code ne prouve rien : il ne teste pas ce
+qu'on croit. Le voir échouer fait partie de l'étape, ce n'est pas une formalité.
 
 Un test lié en échec se corrige, jamais se contourne. Un test non lié se documente et on continue. Une étape bloquée ou ambiguë : STOP, demande — pas d'improvisation hors plan.
 

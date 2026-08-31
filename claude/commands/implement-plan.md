@@ -54,16 +54,22 @@ Lancer `bundle exec rubocop` **à la fin de chaque phase** (pas après chaque fi
    🔨 Étape X/N : [description]
    ```
 
-2. Écrire le code
+2. **Écrire le test d'abord, et le voir échouer.** Si le plan prescrit déjà les
+   tests, partir de ceux-là. Un test qui passe avant que le code existe ne teste
+   pas ce qu'on croit — le voir rouge fait partie de l'étape.
 
-3. Lancer les tests ciblés :
+3. Écrire le code minimal qui fait passer le test
+
+4. Relancer les tests ciblés :
    ```bash
    bundle exec rspec spec/path/to/file_spec.rb
    ```
 
-4. **Corriger tout échec avant de passer à l'étape suivante**
+5. Refactorer tant que les tests restent verts
 
-6. Confirmer quand c'est bon :
+6. **Corriger tout échec avant de passer à l'étape suivante**
+
+7. Confirmer quand c'est bon :
    ```
    ✅ Étape X/N : done. Tests passent.
    ```
@@ -103,9 +109,10 @@ Linter : ✅ clean
 ## ⚠️ Règles critiques
 
 - ✅ Suivre l'ordre CLAUDE.md (modèles → services → controllers → cucumber)
-- ✅ Tester après chaque étape, corriger avant de continuer
+- ✅ Écrire le test avant le code, et le voir échouer avant de l'implémenter
+- ✅ Corriger tout échec avant de continuer
 - ✅ Rester strictement dans le périmètre du plan
-- ❌ Ne pas implémenter tout puis tester à la fin
+- ❌ Ne pas écrire le code avant le test, ni tout implémenter puis tester à la fin
 - ❌ Ne pas ajouter de `sleep`/`wait` dans les tests
 - ❌ Ne pas bypasser les hooks git (`--no-verify`)
 - ❌ Ne pas improviser des fonctionnalités hors plan
