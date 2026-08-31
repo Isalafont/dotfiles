@@ -5,6 +5,9 @@
 En **fin de mois** pour produire un bilan mensuel visuel avec statistiques agrégées,
 tendances et apprentissages clés.
 
+**Semaine de travail d’Isabelle : lundi, mardi, jeudi, vendredi.** Le **mercredi
+est un jour off récurrent** : l’exclure du décompte des jours ouvrés du mois.
+
 ---
 
 ## 📋 Usage
@@ -36,13 +39,13 @@ Sommer depuis les weekly reports :
 - Total PRs ouvertes / mergées
 - Total reviews GitHub (approved + commented + changes requested), depuis les sections "👀 Reviews du Jour" des daily logs ou les sections "🔧 Travail hors-ticket" des weekly reports
 - Total commits
-- Total jours travaillés / jours ouvrés du mois
+- Total jours travaillés / jours ouvrés du mois (**jours ouvrés = lundi, mardi, jeudi, vendredi**, mercredis exclus)
 - Temps total estimé
 
 Calculer les moyennes :
 - Tickets complétés / semaine
 - Temps moyen par ticket
-- Taux de présence (jours travaillés / jours ouvrés)
+- Taux de présence (jours travaillés / jours ouvrés hors mercredis)
 
 Lire le rapport du mois précédent (`MONTH_{YYYY-MM-1}.md`) pour extraire : tickets traités, complétés, PRs mergées, taux de présence — calculer les deltas (↑ / ↓ / =). Si absent, omettre la ligne comparaison.
 
@@ -111,7 +114,7 @@ xychart-beta
 
 | Semaine | Dates | Présence | ✅ | 🔄 | 🚧 | PRs | Reviews |
 |---------|-------|----------|----|----|-----|-----|---------|
-| W{NN} | {lundi}→{vendredi} | {N}/5 | {N} | {N} | {N} | {N} | {N} |
+| W{NN} | {lundi}→{vendredi} | {N}/4 | {N} | {N} | {N} | {N} | {N} |
 
 **Semaine la plus productive :** W{NN} — {N} tickets complétés
 
@@ -206,6 +209,7 @@ et l'emplacement du fichier généré.
 - ✅ Générer automatiquement les weekly manquants (sans demander)
 - ✅ Signaler clairement les rapports reconstitués dans le bilan
 - ✅ Fetcher Linear pour les statuts réels en fin de mois
+- ✅ Exclure les mercredis du décompte des jours ouvrés (jour off récurrent)
 - ✅ Créer le dossier `Reports/Monthly/` s'il n'existe pas
 - ✅ Lire le rapport M-1 pour calculer les deltas (si absent, omettre la ligne comparaison)
 - ✅ Agréger le travail hors-ticket depuis les sections weekly (ou les daily logs si weekly absents)

@@ -5,6 +5,10 @@
 En **fin de semaine** (vendredi soir ou lundi matin) pour agréger les daily logs
 de la semaine et produire un rapport visuel avec statistiques.
 
+**Semaine de travail d’Isabelle : lundi, mardi, jeudi, vendredi.** Le **mercredi
+est un jour off récurrent** — il ne compte pas dans les jours ouvrés ni dans le
+taux de présence.
+
 ---
 
 ## 📋 Usage
@@ -21,8 +25,9 @@ de la semaine et produire un rapport visuel avec statistiques.
 ### 1. Identifier les daily logs de la semaine
 
 Lire tous les fichiers `/Users/isalafont/code/BetaGouv/note_datapass/Journal/Daily/YYYY-MM-DD.md`
-correspondant à la semaine cible (lundi → vendredi).
-Noter les jours sans fichier (non travaillé).
+correspondant à la semaine cible (lundi, mardi, jeudi, vendredi — le mercredi est off).
+Noter les jours sans fichier (non travaillé). Un mercredi sans log est normal :
+ce n’est pas une absence, ne pas le compter comme jour manqué.
 
 ### 2. Agréger les données depuis les logs
 
@@ -49,7 +54,7 @@ Agréger depuis les logs :
 - Tickets : complétés / en review / in progress / démarrés dans la semaine
 - Actions : commits, PRs ouvertes, PRs mergées, reviews GitHub (total + détail par type)
 - Temps : total estimé, moyenne par ticket, ticket le plus chronophage
-- Présence : jours avec log / 5
+- Présence : jours avec log / 4 (lundi, mardi, jeudi, vendredi — le mercredi est off)
 
 Lire le rapport de la semaine précédente (`WEEK_{YYYY-W(NN-1)}.md`) pour extraire : tickets traités, complétés, PRs mergées — calculer les deltas (↑ / ↓ / =).
 
@@ -92,12 +97,12 @@ pie title Tickets — Semaine W{NN}
 ```mermaid
 xychart-beta
     title "Tickets traités par jour"
-    x-axis ["Lun", "Mar", "Mer", "Jeu", "Ven"]
+    x-axis ["Lun", "Mar", "Jeu", "Ven"]
     y-axis "Tickets" 0 --> {max+1}
-    bar [{lun}, {mar}, {mer}, {jeu}, {ven}]
+    bar [{lun}, {mar}, {jeu}, {ven}]
 ```
 
-**Résumé :** {N} tickets traités · {N} complétés · {N} PRs · {N} reviews GitHub · {N}/5 jours travaillés · {X}h estimées
+**Résumé :** {N} tickets traités · {N} complétés · {N} PRs · {N} reviews GitHub · {N}/4 jours travaillés · {X}h estimées
 
 **vs W{NN-1} :** tickets traités {N} ({↑↓=}{delta}) · complétés {N} ({↑↓=}{delta}) · PRs {N} ({↑↓=}{delta})
 
@@ -131,7 +136,7 @@ xychart-beta
 |------|---------|---------|----------------------|
 | Lundi | ✅ | DP-XXXX | {action principale} |
 | Mardi | ✅ | DP-XXXX | {action principale} |
-| Mercredi | ❌ | — | — |
+| Mercredi | ⚪ off | — | — |
 | Jeudi | ✅ | DP-XXXX | {action principale} |
 | Vendredi | ✅ | DP-XXXX | {action principale} |
 
@@ -198,6 +203,7 @@ Afficher les stats clés (présence, tickets, PRs) et l'emplacement du fichier g
 ## ⚠️ Règles
 
 - ✅ Indiquer les jours sans log avec ❌ dans le tableau d'activité
+- ✅ Marquer le mercredi ⚪ off (jour non travaillé récurrent), jamais ❌
 - ✅ Dédoublonner les réalisations et leçons agrégées
 - ✅ Fetcher Linear pour les vrais statuts actuels (pas seulement ceux des logs)
 - ✅ Créer le dossier `Reports/Weekly/` s'il n'existe pas
