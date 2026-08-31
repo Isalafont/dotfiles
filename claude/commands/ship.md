@@ -21,8 +21,9 @@ Outputs : `context.md` + `plan.md` + commits + PR ouverte.
 ## Usage
 
 ```bash
-/ship DP-1234    # Workflow complet depuis un ticket Linear
-/ship            # Reprendre la session en cours
+/ship DPP-42          # Workflow complet depuis un ticket Linear
+/ship "corriger le libellé du scope FranceConnect"   # Sans ticket — il sera proposé en 3b
+/ship                 # Reprendre la session en cours
 ```
 
 ---
@@ -36,9 +37,12 @@ Outputs : `context.md` + `plan.md` + commits + PR ouverte.
 [ ] 4. IMPLEMENT  → Code la feature étape par étape (agent implementer)
 [ ] 4b. REVIEW    → code-reviewer → implementer applique (boucle, max 2 tours)
 [ ] 4c. A11Y      → rgaa-auditor → implementer applique (bloquant + majeur)
-[ ] 4d. STOP      → Récap de la chaîne, attend « Go » (seul arrêt humain)
-[ ] 5. SHIP       → Commit, push, ouvre la PR
-[ ] 6. NEXT       → Met à jour Linear, résumé final
+[ ] 4d. PRÉ-PR    → feature-finisher (brakeman, conventions, doc) → implementer si bloquant
+[ ] 4e. STOP      → Récap + diff affiché, attend « Go »
+[ ] 5a. COMMITS   → Découpage par intention proposé, attend validation ⏸
+[ ] 5b. PUSH      → Commande donnée, Isabelle pousse ⏸
+[ ] 5c. PR        → Corps affiché en entier, attend validation ⏸
+[ ] 6. NEXT       → Session close, suivis notés, résumé final
 ```
 
 ---
@@ -46,7 +50,11 @@ Outputs : `context.md` + `plan.md` + commits + PR ouverte.
 ## Phase 1 : SETUP
 
 1. **Parse les arguments**
-   - `DP-XXXX` : extrait l'ID Linear
+   - `DPP-XX` / `DP-XXXX` / `API-XXXX` : extrait l'ID Linear
+   - **Texte libre entre guillemets** : démarrage sans ticket. Le sujet devient le
+     titre de travail, la session est marquée `sans_ticket: true`, et la création
+     du ticket est proposée en phase 3b une fois le cadrage fait — au bon moment,
+     quand on sait ce qu'on écrit dedans.
    - Sans args : cherche une session existante → reprend depuis la dernière phase
    - Si session pour un autre ticket : avertit, demande confirmation avant d'écraser
 
@@ -54,9 +62,11 @@ Outputs : `context.md` + `plan.md` + commits + PR ouverte.
 
 3. **Initialise la session** `.claude/plans/_ship-session.md`, phase : `understand`
 
-4. **Passe le ticket en "In Progress"** sur Linear (si MCP disponible)
+4. **Ne touche jamais au statut Linear.** L'intégration GitHub s'en charge :
+   « In Progress » au push de la PR, « In Review » quand la PR y passe. Le faire
+   par MCP produit un doublon, aux deux bouts de la chaîne.
 
-Log : `🚀 Shipping DP-1234: "[titre]"`
+Log : `🚀 Shipping DPP-42: "[titre]"`
 
 ---
 
@@ -64,12 +74,7 @@ Log : `🚀 Shipping DP-1234: "[titre]"`
 
 ### 2a. CHECK CONTEXT
 
-Cherche un contexte existant :
-1. `.claude/plans/{LINEAR_ID}-context.md`
-2. `.claude/plans/{LINEAR_ID}/context.md`
-
-Si trouvé : charge le contexte + attachments (frontmatter `attachments:`) → passe à **2d**.
-Si non : continue vers **2b**.
+Cherche un contexte existant (`.claude/plans/{LINEAR_ID}-context.md` ou `.claude/plans/{LINEAR_ID}/context.md`). Si trouvé : charge-le + attachments (frontmatter `attachments:`) → **2d**. Sinon → **2b**.
 
 ### 2b. CLARIFICATION
 
@@ -79,8 +84,7 @@ Si le ticket est ambigu, propose 2-3 interprétations et demande à Isabelle de 
 
 Questions à poser (métier, pas technique) : que doit faire la feature ? Que ne doit-elle PAS faire ? Critères d'acceptance ? Contraintes RGAA/DSFR/périmètre ?
 
-❌ Ne pas explorer le codebase pendant cette phase.
-❌ Ne pas générer de fichiers pendant cette phase.
+Pendant cette phase : ni exploration du codebase, ni génération de fichiers.
 
 ### 2c. GENERATE CONTEXT
 
@@ -132,11 +136,9 @@ Lance les `Glob` / `Grep` / `Read` indépendants **en parallèle**.
 ## Phase 3 : PLAN
 
 **Avant de rédiger, explore 2-3 approches et tranche avec justification. Pose-toi ces questions :**
-- Quel est le bon layer — modèle, organizer, concern, ou controller ?
-- Y a-t-il un pattern existant à suivre plutôt qu'inventer ?
+- Quel est le bon layer — modèle, organizer, concern, ou controller ? Un pattern existant à suivre plutôt qu'inventer ?
 - Où et comment l'autorisation doit-elle être vérifiée ?
-- Qu'est-ce qui pourrait casser silencieusement — sans que les tests l'attrapent ?
-- Quels couplages implicites risque-t-on d'introduire ?
+- Qu'est-ce qui pourrait casser silencieusement ou coupler implicitement — hors du regard des tests ?
 - À quel niveau tester : RSpec behavior, ou Cucumber suffit ?
 
 Génère `.claude/plans/{LINEAR_ID}-plan.md` :
@@ -191,24 +193,15 @@ Si Linear MCP disponible :
 
 Lancer `bundle exec rubocop` **à la fin de chaque phase** (pas après chaque fichier).
 
-**Pour chaque étape :**
-1. Annonce : `🔨 Étape X/N : [description]`
-2. Écris le code
-3. Lance les tests ciblés : `bundle exec rspec spec/path/to/file_spec.rb`
-4. Corrige tout échec avant de passer à l'étape suivante
-5. Confirme : `✅ Étape X/N : done. Tests passent.`
-6. Met à jour le statut dans la session : `pending → in_progress → done`
+Pour chaque étape : code → tests ciblés (`bundle exec rspec spec/path/to/file_spec.rb`) → corrige les échecs avant de continuer, et mets à jour le statut de la session (`pending → in_progress → done`).
 
-**Si un test échoue :** analyse et corrige — ne jamais sauter ni bypasser.
-**Si un test non lié échoue :** documente, continue.
-**Si une étape est bloquée :** documente, demande guidance — ne pas improviser hors plan.
-**Si une étape est ambiguë :** STOP, demande avant d'implémenter.
+Un test lié en échec se corrige, jamais se contourne. Un test non lié se documente et on continue. Une étape bloquée ou ambiguë : STOP, demande — pas d'improvisation hors plan.
 
 ---
 
 ## Phase 4b : REVIEW → APPLY (boucle, max 2 tours)
 
-Chaîne automatique après l'implémentation. **Aucun arrêt humain ici** : le seul STOP est avant la PR (Phase 5).
+Chaîne automatique après l'implémentation. **Aucun arrêt humain dans la boucle review** : les arrêts commencent en 4e, puis à chaque sous-phase de SHIP.
 
 **Boucle, max 2 tours :**
 
@@ -221,7 +214,7 @@ Chaîne automatique après l'implémentation. **Aucun arrêt humain ici** : le s
    - Si ✅ → sortir.
    - Sinon, **2ᵉ tour maximum**. Au bout du 2ᵉ tour encore non ✅ : **stopper le workflow**, session en phase `review-pending`, afficher le rapport restant à Isabelle. Reprendre via `/replan` ou correction manuelle.
 
-❌ Ne jamais sauter cette phase. Elle attrape les régressions silencieuses, les couplages implicites, et les violations sécurité que les tests verts ne voient pas.
+Phase obligatoire : elle attrape les régressions silencieuses, les couplages implicites et les violations sécurité que les tests verts ne voient pas.
 
 ---
 
@@ -239,7 +232,26 @@ Si la diff ne touche aucun fichier front : sauter cette phase, le noter dans le 
 
 ---
 
-## Phase 4d : STOP HUMAIN (seul point d'arrêt)
+## Phase 4d : CHECK PRÉ-PR
+
+Dernier contrôle automatique avant le stop humain, sur ce qui n'a été vérifié
+nulle part ailleurs dans la chaîne.
+
+1. **Check** — spawne `feature-finisher` (`subagent_type: feature-finisher`) sur la branche.
+   Il lance brakeman, contrôle les conventions DataPass, vérifie la cohérence
+   doc/tutoriel si l'API est touchée, et écrit son rapport dans `.claude/audit/`.
+   **Condition d'arrêt** : il ne corrige rien et ne commit rien — il rapporte.
+2. **Apply** — s'il remonte des bloquants 🚫, spawne `implementer` avec son rapport.
+   Les points mineurs restent en suggestion dans le récap final.
+
+Précisions :
+- L'étape accessibilité de `feature-finisher` fait doublon avec la phase 4c —
+  lui indiquer de la sauter quand 4c a déjà tourné.
+- Il ne relance ni rspec, ni cucumber, ni rubocop : ils ont déjà tourné en 4 et 4b.
+
+---
+
+## Phase 4e : STOP HUMAIN — récap et diff
 
 Avant tout commit/push, présente à Isabelle le récap de la chaîne :
 
@@ -253,9 +265,20 @@ A11y    : [audité / sauté car pas de front]
   Appliqué (bloquant+majeur) : [liste]
   Mineurs laissés en suggestion : [liste]
 
-Diff finale : X fichiers. Tests : ✅  Rubocop : ✅
+Pré-PR : brakeman ✅  conventions ✅  doc/tutoriel [à jour / n.a.]
+```
 
-Je passe en SHIP (commit/push/PR) ? « Go » / feedback.
+Puis **affiche le diff**, pas son décompte :
+
+```bash
+git diff develop...HEAD --stat
+```
+
+Isabelle relit le diff avant tout commit — c'est une règle de son CLAUDE.md
+global, pas une option. Si elle demande le détail d'un fichier, montre-le.
+
+```
+Je passe en SHIP ? « Go » / feedback.
 ```
 
 **Attends « Go » avant la Phase 5.**
@@ -264,39 +287,92 @@ Je passe en SHIP (commit/push/PR) ? « Go » / feedback.
 
 ## Phase 5 : SHIP
 
-1. **Validation finale** — tout doit passer :
-   ```bash
-   bundle exec rspec
-   bundle exec rubocop
-   ```
+Trois sous-phases, **trois arrêts**. Ne jamais les enchaîner d'un seul « Go » :
+Isabelle valide le découpage, déclenche le push, et relit le corps de la PR.
 
-2. **Commit** — stage les fichiers un par un, jamais `git add -A`
-   - Message impératif, explique le pourquoi pas le comment
-   - Ne jamais mentionner Claude
+Pas de revalidation complète ici : rspec et rubocop ont tourné en phase 4 et 4b,
+brakeman et les conventions en 4d. Les relancer allongerait la chaîne sans rien
+apprendre.
 
-3. **Push** vers la branche distante
+### 5a. Découpage en commits → **arrêt**
 
-4. **Crée la PR** via `gh pr create` :
-   ```
-   Titre : [court, < 70 caractères]
+`/ship` ne produit **jamais un seul commit fourre-tout**. Découpe par intention :
+un commit par changement qui se raconte seul, dans l'ordre où on le relirait.
 
-   ## Résumé
-   - [Ce qui a été fait]
-   - [Pourquoi]
+Propose le découpage avant d'écrire quoi que ce soit :
 
-   ## Plan de test
-   - [ ] Test manuel : [étapes]
-   - [ ] Tests RSpec passent
-   - [ ] Tests Cucumber passent
-   - [ ] Linter propre
+```
+📦 Découpage proposé — N commits
 
-   Fixes DP-XXXX
-   ```
+1. <message impératif>
+   <fichiers>
+2. <message impératif>
+   <fichiers>
 
-5. **Met à jour Linear** : commentaire avec lien PR, ticket en "In Review"
+OK pour ce découpage ? « Go » / « regroupe 2 et 3 » / « sépare 1 »
+```
+
+Puis, sur accord : stage les fichiers **un par un**, jamais `git add -A`.
+
+**Messages courts.** Une ligne à l'impératif, 72 caractères maximum, et rien
+d'autre. Pas de corps de message par défaut, pas de justification, pas de
+reformulation de ce que le diff montre déjà. On n'ajoute un corps que si une
+décision non lisible dans le code doit être tracée — et alors deux lignes
+suffisent. Jamais de mention de Claude.
+
+```
+✅  Borne les tentatives de webhook à 10 essais
+✅  Mise à jour de la doc et du tutoriel
+❌  Met à jour la documentation des webhooks pour refléter la nouvelle borne
+    de 10 tentatives introduite par ce changement, ainsi que le tutoriel
+```
+
+Après les commits, montre `git log develop..HEAD --oneline` et **arrête-toi**.
+
+### 5b. Push → **arrêt**
+
+Ne pousse pas de toi-même. Donne la commande :
+
+```
+🚀 Prêt à pousser. Lance :
+! git push -u origin <branche>
+
+Ou dis « pousse » si tu veux que je le fasse.
+```
+
+Isabelle pousse à la main par défaut. Attends que le push soit fait avant 5c.
+
+### 5c. Corps de la PR → **arrêt**
+
+Rédige le corps, **affiche-le en entier**, attends validation avant `gh pr create` :
+
+```
+Titre : <Type> DPP-XX — [court, < 70 caractères au total]
+        Type : Fixes · Feature · Refactor · Chore · Docs
+
+## Résumé
+- [Ce qui a été fait]
+- [Pourquoi]
+
+## Plan de test
+- [ ] Test manuel : [étapes]
+- [ ] Tests RSpec passent
+- [ ] Tests Cucumber passent
+- [ ] Linter propre
+```
+
+⚠️ **L'identifiant du ticket doit figurer dans le titre de la PR.** Linear est
+branché sur GitHub : il passe le ticket en « In Review » et rattache la PR tout
+seul dès qu'il reconnaît l'identifiant. Sans lui dans le titre, l'automatisme ne
+part pas et le ticket reste en arrière.
+
+❌ **Ne touche pas à Linear après création de la PR** — pas de commentaire de
+lien, pas de changement de statut par MCP. L'intégration s'en charge, et le
+faire à la main produit un doublon.
 
 ❌ Ne jamais force push.
 ❌ Ne jamais pousser avec des tests en échec.
+❌ Ne jamais enchaîner 5a, 5b et 5c sans arrêt intermédiaire.
 
 ---
 
@@ -312,7 +388,7 @@ Je passe en SHIP (commit/push/PR) ? « Go » / feedback.
 Fichiers modifiés : X
 Tests ajoutés : Y
 PR : [url]
-Linear : In Review
+Linear : In Review (via l’intégration GitHub)
 ```
 
 ---
