@@ -45,6 +45,11 @@
             "type": "command",
             "command": "bash ~/.claude/hooks/morning_check.sh",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/push_notify.sh start",
+            "timeout": 3
           }
         ]
       }
@@ -102,6 +107,24 @@
             "command": "bash ~/.claude/hooks/evening_check.sh",
             "timeout": 5,
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/push_notify.sh done",
+            "timeout": 8,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/push_notify.sh waiting",
+            "timeout": 8,
+            "async": true
           }
         ]
       }
@@ -142,6 +165,8 @@
   "showThinkingSummaries": true,
   "theme": "auto",
   "verbose": true,
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "autoMode": {
     "environment": [
@@ -170,6 +195,5 @@
       "**Org-specific CLIs**: None configured — project tooling is make, bundle, rails, rubocop, cucumber (all standard for this stack)",
       "Routine under DataPass worktrees (dp-*, data_pass/<name>) is expected per CLAUDE.md worktree conventions"
     ]
-  },
-  "agentPushNotifEnabled": true
+  }
 }
