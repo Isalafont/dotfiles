@@ -135,6 +135,14 @@ Lance les `Glob` / `Grep` / `Read` indépendants **en parallèle**.
 
 ## Phase 3 : PLAN
 
+**Lance d’abord `plan-challenger`, puis rédige.** Dès que le contexte est validé
+(2d), spawne l’agent `plan-challenger` en lui donnant **uniquement** le chemin de
+`.claude/plans/{LINEAR_ID}-context.md`. Ne lui transmets jamais ton approche, ni
+dans le prompt, ni par un fichier : un agent qui voit une solution la valide.
+Il tourne pendant que tu rédiges, donc il ne coûte pas de temps mural.
+
+**Puis rédige ton plan sans attendre son retour** — sinon tu ancres sur lui.
+
 **Avant de rédiger, explore 2-3 approches et tranche avec justification. Pose-toi ces questions :**
 - Quel est le bon layer — modèle, organizer, concern, ou controller ? Un pattern existant à suivre plutôt qu'inventer ?
 - Où et comment l'autorisation doit-elle être vérifiée ?
@@ -162,6 +170,33 @@ Génère `.claude/plans/{LINEAR_ID}-plan.md` :
 ## Checklist
 ```
 
+### 3a-bis. CONFRONTATION
+
+Quand `plan-challenger` a rendu, pose les deux approches côte à côte. **Tu ne
+tranches pas seule** : c’est le seul moment du workflow où Isabelle doit vraiment
+lire.
+
+```
+🔀 Approches
+
+**La mienne** — [3 lignes max]
+**Le challenger** — [3 lignes max, tel qu’il l’a rendu]
+
+**Divergence** : [convergentes / divergent sur le layer / divergent sur le périmètre]
+→ [en 1 ligne : ce que ça change concrètement]
+```
+
+- **Convergentes** — dis-le en une ligne et enchaîne sur l’approbation. Ne
+  fabrique pas un désaccord pour donner du corps à la section.
+- **Divergentes** — expose l’écart sans plaider pour la tienne, et **attends
+  qu’Isabelle tranche**. Un désaccord sur le layer ou sur le périmètre est un
+  signal fort : il vaut mieux le payer ici qu’après avoir écrit le code.
+
+Cette phase existe parce que le tableau « Approches considérées » que tu remplis
+toi-même, après avoir choisi, est une justification et non une comparaison — il
+n’a rien empêché sur DPP-94 (libellés du cadre juridique Produits DINUM), dont le
+travail a dû être intégralement repris.
+
 Présente le plan et attends l'approbation :
 
 ```
@@ -177,7 +212,7 @@ Si feedback : révise et re-présente. Si "Go" : continue vers 3b puis Phase 4.
 ### 3b. ENRICH TICKET
 
 Si Linear MCP disponible :
-1. Remplit `.claude/templates/linear-ticket-template.md` avec clarifications, découvertes et plan
+1. Rédige l’enrichissement **au canevas de l’équipe du ticket** — sur DataPass Produit (`DPP`), lire le template Linear correspondant (US / TS / Bug / Cadrage) avec `get_template` ; cf. skill `create-linear-ticket`
 2. Présente le résultat : `"Souhaites-tu publier sur Linear ? Oui / Modifie: [...] / Non"`
 3. **Attend la confirmation avant tout appel MCP**
 

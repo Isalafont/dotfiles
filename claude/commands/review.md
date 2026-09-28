@@ -19,12 +19,11 @@ Outputs : `.claude/plans/review-pr-{numéro-PR}-{YYYY-MM-DD}.md` structuré avec
 
 ## Principes de review
 
-**Ton : un senior qui explique simplement.** Tu connais le code à fond, mais tu écris comme si tu parlais à un junior ou à quelqu'un de non-tech. Phrases courtes. Pas de jargon gratuit (si un terme technique est nécessaire, explique-le en trois mots). Va droit au but : le lecteur doit comprendre *le problème* et *quoi faire* en dix secondes.
+**Ton : un senior qui explique simplement.** Tu connais le code à fond, mais tu écris comme si tu parlais à un junior ou à quelqu'un de non-tech. Le lecteur doit comprendre *le problème* et *quoi faire* en dix secondes.
 
 - **Franc et direct** : dis clairement ce qui ne va pas, sans tourner autour du pot. Si tu penses qu'Isabelle a tort, dis-le.
 - **Simple avant tout** : préfère une phrase courte à un paragraphe. Une idée par point. Pas de digression sur le « pourquoi historique » sauf si c'est utile pour décider.
-- **Toujours pointer précisément** : chaque remarque commence par `fichier:ligne` (ou `fichier:ligne-ligne` pour un bloc). Le lecteur doit pouvoir cliquer et tomber pile au bon endroit.
-- **Montrer le code, pas le décrire** : pour chaque suggestion ou bloquant, donne un bloc « Aujourd'hui » et un bloc « Mieux » copier-collables. Le code parle mieux qu'un paragraphe d'explication.
+- **Précis et démontré** : chaque remarque pointe un `fichier:ligne` et montre le code (« Aujourd'hui »/« Mieux ») plutôt que de le décrire — détail du gabarit plus bas.
 - **Constructif** : chaque critique vient avec une piste concrète. Jamais « c'est mal » sans « voilà comment faire ».
 - **Juger le code, pas l'effort** : évalue la qualité technique, pas le temps passé.
 
@@ -98,19 +97,13 @@ Ensuite :
 
 ## Format de réponse
 
-**Avant de rédiger, réponds mentalement aux 3 questions de la Section 2 sur l'ensemble du diff.** Une fois que tu as une vue complète — surprises, risques silencieux, couplages — produis le fichier en une passe.
+Une fois que tu as une vue complète du diff (cf. Section 2), produis le fichier en une passe.
 
 **Écrire l'intégralité de la review dans `.claude/plans/review-pr-{numéro-PR}-{YYYY-MM-DD}.md`** où `{numéro-PR}` est l'argument passé au skill et `{YYYY-MM-DD}` la date du jour (récupérable via `date +%Y-%m-%d` ou la variable de contexte `Today's date`). Si le fichier existe déjà (review redéclenchée le même jour), écraser. La réponse texte se limite à signaler que le fichier est prêt et à mentionner son nom complet.
 
-### Règles de mise en forme (à respecter pour chaque point)
+### Gabarit d'un point (à respecter pour chaque point)
 
-1. **Un point = un titre court en gras + le pointeur sur la ligne suivante.**
-   Le pointeur `fichier:ligne` est sur sa propre ligne, en `code`, juste sous le titre. Jamais noyé dans une phrase.
-2. **Explication en 1 à 2 phrases max.** Réponds à « c'est quoi le souci ? » et « pourquoi ça compte ? ». Pas plus.
-3. **Toujours un bloc « Aujourd'hui » et un bloc « Mieux »** dès qu'il y a du code à changer. Code minimal et copier-collable (montre juste les lignes qui changent + une ligne de contexte autour si besoin, pas tout le fichier). Langage du bloc explicite : ```ruby / ```erb / ```yaml.
-4. **Pas de paragraphe-fleuve.** Si tu as besoin de plus de deux phrases, c'est probablement deux points distincts.
-
-Gabarit d'un point :
+Un point = titre court en gras + pointeur `fichier:ligne` sur sa propre ligne + 1-2 phrases (le souci, pourquoi ça compte) + les blocs « Aujourd'hui »/« Mieux » dès qu'il y a du code à changer (minimal, copier-collable, langage explicite ```ruby / ```erb / ```yaml). Au-delà de deux phrases, c'est probablement deux points distincts.
 
 > **Titre court du problème**
 > `chemin/du/fichier.rb:42`

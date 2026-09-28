@@ -227,7 +227,7 @@ X points (Y heures)
 
 Si Linear MCP disponible et ticket fetché :
 
-1. Remplit `.claude/templates/linear-ticket-template.md` avec les clarifications, découvertes et le plan
+1. Rédige l’enrichissement **au canevas de l’équipe du ticket** — sur DataPass Produit (`DPP`), lire le template Linear correspondant (US / TS / Bug / Cadrage) avec `get_template` ; cf. skill `create-linear-ticket`
 2. Présente le résultat à Isabelle : `"Souhaites-tu publier sur Linear ? Oui / Modifie: [...] / Non"`
 3. **Attend la confirmation avant tout appel MCP**
 

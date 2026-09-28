@@ -81,3 +81,4 @@ export PATH="$PATH:$HOME/.local/bin"
 # Secrets (tokens, clés API) — fichier non versionné
 [[ -f "$HOME/.secrets" ]] && source "$HOME/.secrets"
 
+[[ -f ~/src/agent-vm/agent-vm.sh ]] && source ~/src/agent-vm/agent-vm.sh

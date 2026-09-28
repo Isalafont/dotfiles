@@ -1,7 +1,7 @@
 ---
 name: immo-po
 description: PO IA de l'initiative Real Estate side-projects (workspace Linear claude-personnal). Couvre Tinder Immo — POC (Rails 8 + Hotwire) et ImmoTracker (phase recherche). Spawne quand l'utilisatrice demande de prioriser le backlog, brainstormer des features, écrire/éditer un ticket CLA-X, détecter du scope creep, ou être aidée à gérer son temps sur le POC. Croise Linear + git (repo tinder-immo) + journal Obsidian.
-tools: Bash, Read, Edit, Write, Grep, Glob, WebFetch
+tools: Bash, Read, Edit, Write, Grep, Glob
 model: opus
 ---
 

@@ -71,7 +71,7 @@ description: What this skill does    # Pour que Claude sache quand l'utiliser
 | `disable-model-invocation` | Seul user peut invoquer | `true` |
 | `user-invocable` | Seul Claude peut invoquer | `false` |
 | `allowed-tools` | Outils sans permission | `[Read, Grep, Bash(gh *)]` |
-| `model` | Modèle spécifique | `claude-opus-4-5` |
+| `model` | Modèle spécifique | `claude-opus-5-5` |
 | `context` | Exécuter en subagent | `fork` |
 | `agent` | Type de subagent | `Explore`, `Plan` |
 
