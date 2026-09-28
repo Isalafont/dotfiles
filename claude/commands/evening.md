@@ -178,7 +178,38 @@ S'il y a au moins un ticket mergé non archivé, **proposer** à Isabelle :
 
 ❌ Ne **jamais** archiver sans accord explicite.
 
-### 7c. Commit + push vault
+### 7c. Détecter les demandes externes sans brief
+
+Les demandes qui arrivent par mail ou par le support atterrissent dans le daily
+log, jamais dans Linear. Cette étape rattrape celles qui n'ont pas été
+transformées en objet exploitable par la PO.
+
+Dans le daily log du jour, cherche les traces d'une demande venue de l'extérieur :
+un fournisseur de données, une équipe partenaire, un ticket support, un mail
+cité. Les marqueurs habituels sont un nom d'organisme, un numéro de demande
+DataPass, ou une phrase du type « j'ai envoyé l'email », « demande de », « ils
+ont besoin de ».
+
+Pour chacune, vérifie s'il existe déjà un brief :
+
+```bash
+ls .claude/po-brief/ 2>/dev/null
+```
+
+S'il manque un brief pour une demande identifiée, **proposer** :
+
+> 📥 Demande externe sans brief détectée dans le daily : « <objet en 5 mots> ».
+> Veux-tu que je lance `po-assistant` dessus ? Colle le fil et je le traite.
+> (oui / non / plus tard)
+
+Règles :
+- **Ne jamais lancer `po-assistant` sans accord** — il lui faut le fil complet,
+  que seul Isabelle peut fournir. Proposer, pas exécuter.
+- Une seule proposition par demande, même si elle traîne plusieurs jours.
+- Si aucune demande externe n'apparaît dans le daily : sauter l'étape sans
+  rien afficher.
+
+### 7d. Commit + push vault
 
 Après toutes les modifs du jour (daily log, notes de tickets, notes epic, éventuels archives) :
 

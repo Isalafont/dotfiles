@@ -37,10 +37,33 @@ Si le dernier daily log contient une section « 🏖 À clôturer avant les vaca
 
 Via MCP Linear, récupérer les issues assignées à Isabelle
 (user ID `733836f2-a572-4acd-bd62-b70ce08c6421`) **sans filtrer par équipe** —
-les tickets peuvent être dans DataPass (key `DP`) ou API Parteprise (key `API`).
+les tickets peuvent être dans **DataPass Produit (key `DPP`, nouvelle équipe PO Natalia, socle produit actuel)**, DataPass (key `DP`, historique) ou API Parteprise (key `API`).
 Filtrer : statuts In Progress + Todo, triés par priorité.
 
-Conserver le `identifier` Linear (ex: `DP-1234` ou `API-6735`) tel quel dans tout le daily log.
+Conserver le `identifier` Linear (ex: `DPP-42`, `DP-1234` ou `API-6735`) tel quel dans tout le daily log.
+
+### 2b. Relever les briefs en attente d'une réponse
+
+Les brouillons produits par `po-assistant` restent bloqués tant qu'une question
+n'a pas trouvé sa réponse — côté Natalia pour un arbitrage produit, côté
+demandeur pour un champ manquant.
+
+```bash
+ls .claude/po-brief/ 2>/dev/null
+```
+
+Pour chaque fichier, lire le frontmatter et les sections « Pour Natalia » et
+« Champs manquants ». Un brief est **en attente** si l'une des deux est non vide.
+
+Les faire apparaître dans le résumé du matin, avec leur âge en jours ouvrés :
+
+> 📥 Briefs en attente : « <objet> » (3 j — question à Natalia),
+> « <objet> » (1 j — 2 champs manquants côté demandeur)
+
+Règles :
+- **Au-delà de 5 jours ouvrés**, signaler explicitement comme relance à faire.
+- Ne rien relancer automatiquement : ni mail, ni message, ni ticket.
+- Si le dossier est vide ou n'existe pas : sauter l'étape sans rien afficher.
 
 ### 3. Évaluer si un contexte suffisant existe
 
@@ -58,17 +81,9 @@ Poser une ou deux questions pour orienter la journée :
 
 Sans poser de question, identifier **un seul ticket principal** pour la journée.
 
-**Règle de sélection :**
-1. Parmi les tickets In Progress assignés à Isabelle
-2. Exclure les tickets bloqués sur une action externe (en attente de review quelqu'un d'autre, aucune action possible aujourd'hui)
-3. Prendre le ticket avec la **priorité Linear la plus haute**
-4. En cas d'égalité : prendre le **plus ancien** In Progress
+**Règle de sélection :** parmi les tickets In Progress assignés à Isabelle, hors ceux bloqués sur une action externe (rien à faire aujourd'hui), prendre la **priorité Linear la plus haute** — à égalité, le plus ancien In Progress.
 
-**Déduire une définition de done minimale** d'après le titre et l'état du ticket :
-- Titre contient "Audit" ou "audit" → *"{N} pages/composants audités"*
-- Titre contient "Bug" ou "Fix" → *"Fix implémenté, tests verts, PR créée"*
-- Titre contient "Review" ou ticket en statut review → *"Review terminée, commentaires postés"*
-- Défaut → *"Une action concrète et tracée réalisée sur ce ticket"*
+**Déduire une définition de done minimale** d'après le type et l'état du ticket (audit → pages/composants audités ; bug/fix → fix + tests verts + PR ; review → commentaires postés ; défaut → une action concrète et tracée sur le ticket).
 
 ### 3c. Détecter le méta-travail et marquer la timebox
 
@@ -84,11 +99,7 @@ Si le fichier `/Users/isalafont/code/BetaGouv/note_datapass/Journal/Daily/YYYY-M
 
 **Pour chaque ticket en cours**, lire sa note dans le vault (`Tickets/{KEY}-XXXX.md` ou `Tickets/YYYY-MM/{KEY}-XXXX/index.md`, où `{KEY}` est `DP` ou `API`) et récupérer le champ `epic` du frontmatter. S'il est renseigné, ajouter `(epic: [[{epic-id}]])` après le titre dans la liste des tickets du daily log.
 
-**Déterminer les tags Obsidian** depuis les tickets en cours :
-- Features actives → `#types-habilitation`, `#upload`, `#accessibilite`…
-- Domaines → `#admin-ui`, `#formulaire`, `#data-provider`, `#audit-rgaa`…
-- Types → `#test-coverage`, `#bug`, `#refacto`…
-- Si jeudi après-midi : ajouter `#audit-rgaa`
+**Déterminer les tags Obsidian** depuis les tickets en cours, selon la « Taxonomie de tags validée » plus bas. En plus :
 - Lire `.claude/current-cycle.md` → ajouter le tag cycle (ex: `#cycle4`). Si lundi ET fichier absent ou daté d'une autre semaine : demander à Isabelle le cycle en cours, puis écraser le fichier.
 
 ```markdown
@@ -150,7 +161,7 @@ tags: [tag-feature, tag-domaine]
 
 **Taxonomie de tags validée :**
 - Features : `#types-habilitation` · `#upload` · `#accessibilite`
-- Domaines : `#admin-ui` · `#formulaire` · `#data-provider` · `#audit-rgaa`
+- Domaines : `#admin-ui` · `#formulaire` · `#data-provider`
 - Cycle : tag lu depuis `.claude/current-cycle.md` (ex: `#cycle4`)
 - Types : `#test-coverage` · `#bug` · `#refacto`
 
@@ -170,11 +181,7 @@ Présenter clairement :
 
 ## ⚠️ Règles
 
-- ✅ Créer le daily log même si aucun log de la veille n'existe
-- ✅ Indiquer clairement quand aucun ticket prioritaire n'est identifié
-- ✅ Poser des questions uniquement si le contexte est vraiment insuffisant
-- ❌ Ne pas modifier les logs des jours précédents
-- ❌ Ne pas écraser un daily log déjà créé dans la journée
+Ne jamais modifier un log d'un jour précédent, ni écraser un daily déjà créé aujourd'hui (afficher le résumé à la place).
 
 ---
 
