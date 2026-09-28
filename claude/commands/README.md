@@ -38,7 +38,7 @@ Pull commentaires Linear → vault             →  /sync-ticket DP-XXXX
 
 ### `/morning`
 
-Démarre la journée : lit le dernier daily log, fetche les tickets Linear assignés, crée le daily log du jour avec les tickets en cours annotés de leur epic.
+Démarre la journée : lit le dernier daily log, fetche les tickets Linear assignés, crée le daily log du jour avec les tickets en cours annotés de leur epic. **Exclut du livrable du jour tout ticket reporté 3 fois ou plus** et l’affiche dans « ⏸ À renégocier » (faire · découper · rendre · abandonner), à trancher par écrit avec quelqu’un.
 
 ---
 
@@ -56,7 +56,7 @@ Agrège : PRs DataPass ouvertes (à toi / en attente / Dependabot), tickets Line
 
 ### `/evening`
 
-Clôture la journée : met à jour le daily log (réalisations, tickets travaillés, priorités lendemain), en reprenant la structure du template `Suivi/tickets.md` (lecture seule — **jamais modifié**). Appende une ligne dans la section "Sessions de travail" de chaque ticket travaillé, met à jour le statut dans la note epic. **Détecte aussi les PRs mergées du jour** non encore archivées dans le vault et propose `/cleanup-plans DP-XXXX` pour chacune. **Commit + push automatique du vault** en fin de routine (étape 7c, avec `git pull --rebase` avant push).
+Clôture la journée : met à jour le daily log (réalisations, tickets travaillés, priorités lendemain), en reprenant la structure du template `Suivi/tickets.md` (lecture seule — **jamais modifié**). Appende une ligne dans la section "Sessions de travail" de chaque ticket travaillé, met à jour le statut dans la note epic. **Détecte aussi les PRs mergées du jour** non encore archivées dans le vault et propose `/cleanup-plans DP-XXXX` pour chacune. **Commit + push automatique du vault** en fin de routine (étape 7d, avec `git pull --rebase` avant push). **Compte les reports** de la priorité n°1 (étape 5b) et **liste les derniers gestes en plan** (étape 5c, lecture seule) : fichiers non commités, commits non poussés, branches sans PR, stash de 2 à 30 jours.
 
 ---
 
@@ -220,7 +220,7 @@ Crée une note de travail dans `.claude/plans/` avec préfixe automatique, puis 
 ### `/weekly`
 
 Rapport hebdomadaire : agrège les daily logs de la semaine, statistiques tickets/PRs/présence, graphiques Mermaid, section epics travaillées.
-Inclut une comparaison vs la semaine précédente (deltas ↑↓=), une section "Travail hors-ticket" (tooling, config, reviews), et une estimation de charge pour la semaine suivante (🟢/🟡/🔴).
+Inclut une ligne **Cap** (priorité n°1 tenue, jours de chaos et jours calmes, livrable atteint, tickets à renégocier), une comparaison vs la semaine précédente (deltas ↑↓=), une section "Travail hors-ticket" (tooling, config, reviews), et une estimation de charge pour la semaine suivante (🟢/🟡/🔴).
 Génère `Journal/Reports/Weekly/WEEK_YYYY-WNN.md`.
 **Invoque `/cleanup-plans --stale --yes`** pour archiver les fichiers > 14j de `.claude/plans/` (rituel vendredi). **Commit + push automatique du vault** en fin de routine.
 

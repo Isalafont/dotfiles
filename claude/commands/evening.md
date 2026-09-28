@@ -113,6 +113,47 @@ S'il existe : compléter sans écraser les sections déjà remplies par /handove
 2. {Priorité 2}
 ```
 
+### 5b. Compteur de reports de la priorité n°1
+
+Si le « 🎯 Livrable du jour » n’apparaît pas dans « 🏆 Réalisations du Jour », c’est un report. Compter les reports de ce ticket sur les 15 derniers daily logs, avec la même définition que `/morning` (étape 3b).
+
+- **1 ou 2 reports** → écrire `(report N)` après la priorité concernée dans « Préparation du Lendemain ».
+- **3 reports ou plus** → ne **pas** le reporter une fois de plus en priorité n°1. L’inscrire en tête de « Préparation du Lendemain » :
+  > ⏸ **[[DP-XXXX]]** — reporté N fois. À trancher demain, par écrit, avec quelqu’un : faire · découper · rendre · abandonner.
+
+  Le signaler aussi à Isabelle dans le résumé final (étape 8).
+- Un arbitrage écrit dans le daily du jour (« écarté au profit de… ») compte quand même comme un report : il est tracé, mais le compteur continue.
+
+### 5c. Vérifier les derniers gestes (lecture seule)
+
+Lister, sans rien corriger, ce qui reste en plan dans le dépôt DataPass et ses worktrees :
+
+```bash
+cd /Users/isalafont/code/BetaGouv/Etalab/data_pass
+git worktree list --porcelain | awk '/^worktree /{print $2}' | while read -r wt; do
+  [ -d "$wt" ] || continue
+  dirty=$(git -C "$wt" status --porcelain --untracked-files=no | wc -l | tr -d ' ')
+  unpushed=$(git -C "$wt" log --oneline @{u}..HEAD 2>/dev/null | wc -l | tr -d ' ')
+  branch=$(git -C "$wt" branch --show-current)
+  [ "$dirty" != 0 ] || [ "$unpushed" != 0 ] && echo "$wt ($branch) : $dirty fichier(s) modifié(s), $unpushed commit(s) non poussé(s)"
+done
+now=$(date +%s)
+git stash list --format='%ct|%gd (%cr) : %gs' | while IFS='|' read -r ts label; do
+  age=$(( (now - ts) / 86400 ))
+  [ "$age" -ge 2 ] && [ "$age" -le 30 ] && echo "$label"
+done
+echo "Stash de plus de 30 jours : $(git stash list --format='%ct' | awk -v n="$now" '(n-$1)/86400>30' | wc -l | tr -d ' ')"
+```
+
+Signaler dans le résumé final, une ligne par élément :
+- les fichiers modifiés non commités ;
+- les commits non poussés ;
+- les branches poussées sans PR ouverte (`gh pr list --head <branche>`) ;
+- les stash de 2 à 30 jours, un par ligne : ce sont les gestes récents oubliés ;
+- le nombre de stash de plus de 30 jours, en une ligne, sans les détailler.
+
+Règle associée : **pas de nouveau ticket démarré demain** tant qu’un de ces derniers gestes concerne un ticket à elle. Le noter en tête de « Préparation du Lendemain » (« Finir d’abord : push `dp-99` » par exemple). Ne jamais committer, pousser, ouvrir de PR ni supprimer de stash à sa place.
+
 ### 6. Mettre à jour les notes de tickets (seulement si tickets travaillés)
 
 Pour chaque ticket Linear travaillé aujourd'hui :
@@ -232,6 +273,7 @@ Afficher :
 - Tickets travaillés et leur statut final
 - Réalisations clés du jour
 - Priorités du lendemain
+- Tickets à renégocier (3 reports ou plus) et derniers gestes en plan (étapes 5b et 5c), s’il y en a
 
 ---
 

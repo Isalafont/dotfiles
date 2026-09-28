@@ -55,8 +55,13 @@ Agréger depuis les logs :
 - Actions : commits, PRs ouvertes, PRs mergées, reviews GitHub (total + détail par type)
 - Temps : total estimé, moyenne par ticket, ticket le plus chronophage
 - Présence : jours avec log / 4 (lundi, mardi, jeudi, vendredi — le mercredi est off)
+- **Cap** :
+  - **Priorité n°1 tenue** : pour chaque jour J, la priorité n°1 de « Préparation du Lendemain » du jour ouvré précédent apparaît-elle dans les « Réalisations du Jour » de J ? Donner le résultat en `x/y`.
+  - **Livrable atteint** : le « 🎯 Livrable du jour » apparaît-il dans les « Réalisations du Jour » du même jour ? Donner `x/y`, en comptant les partiels à part.
+  - **Tickets à renégocier** : les tickets reportés 3 fois ou plus (définition de `/morning`, étape 3b), et l’option choisie (faire, découper, rendre, abandonner) ou « non tranché ».
+  - **Jours chaotiques** : les jours avec une interruption imposée notée (urgence prod, deadline externe, réassignation). Donner la tenue de la priorité n°1 séparément pour ces jours et pour les jours calmes.
 
-Lire le rapport de la semaine précédente (`WEEK_{YYYY-W(NN-1)}.md`) pour extraire : tickets traités, complétés, PRs mergées — calculer les deltas (↑ / ↓ / =).
+Lire le rapport de la semaine précédente (`WEEK_{YYYY-W(NN-1)}.md`) pour extraire : tickets traités, complétés, PRs mergées, priorité n°1 tenue, livrable atteint — calculer les deltas (↑ / ↓ / =).
 
 ### 5. Identifier le travail hors-ticket
 
@@ -104,7 +109,9 @@ xychart-beta
 
 **Résumé :** {N} tickets traités · {N} complétés · {N} PRs · {N} reviews GitHub · {N}/4 jours travaillés · {X}h estimées
 
-**vs W{NN-1} :** tickets traités {N} ({↑↓=}{delta}) · complétés {N} ({↑↓=}{delta}) · PRs {N} ({↑↓=}{delta})
+**Cap :** priorité n°1 tenue {x}/{y} (chaos {x}/{y} · calme {x}/{y}) · livrable atteint {x}/{y} (+{N} partiels) · à renégocier : {[[DP-XXXX]] (N reports, option ou « non tranché »)} ou « aucun »
+
+**vs W{NN-1} :** tickets traités {N} ({↑↓=}{delta}) · complétés {N} ({↑↓=}{delta}) · PRs {N} ({↑↓=}{delta}) · priorité n°1 {x/y} ({↑↓=}) · livrable {x/y} ({↑↓=})
 
 **Feature dominante :** `#{tag-feature}` — {N} tickets · **Domaine :** `#{tag-domaine}`
 

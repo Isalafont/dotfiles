@@ -85,6 +85,14 @@ Sans poser de question, identifier **un seul ticket principal** pour la journée
 
 **Déduire une définition de done minimale** d'après le type et l'état du ticket (audit → pages/composants audités ; bug/fix → fix + tests verts + PR ; review → commentaires postés ; défaut → une action concrète et tracée sur le ticket).
 
+**Compteur de reports — exclure un ticket reporté 3 fois.** Avant de retenir le candidat, compter ses reports dans les 15 derniers daily logs : un report = un jour où le ticket était « Livrable du jour » ou priorité n°1 de la veille, **sans** apparaître dans « 🏆 Réalisations du Jour » de ce même jour. Un jour où le log note un arbitrage explicite (« écarté au profit de… ») compte aussi comme report.
+
+- **Moins de 3 reports** → le ticket peut être retenu.
+- **3 reports ou plus** → ne **pas** le retenir comme livrable, passer au candidat suivant selon la même règle. L'inscrire dans la section « ⏸ À renégocier » du daily, avec son nombre de reports et ces quatre options :
+  > **[[DP-XXXX]]** — reporté N fois. À trancher aujourd'hui, par écrit, avec quelqu’un (PO, manager, collègue) : **faire** demain (créneau bloqué) · **découper** (plus petit livrable tenable en une journée) · **rendre** (réassigner) · **abandonner** (fermer ou repasser en Backlog).
+- Le ticket sort de « À renégocier » dès qu'une de ces options est notée dans un daily (Notes de Travail ou Linear). Ne jamais relancer le compteur tant que rien n'est noté.
+- Ne jamais trancher à la place d'Isabelle : afficher, pas décider.
+
 ### 3c. Détecter le méta-travail et marquer la timebox
 
 Un ticket est **méta-travail** si son titre contient l'un de ces mots-clés (casse ignorée) :
@@ -117,6 +125,10 @@ tags: [tag-feature, tag-domaine]
 
 > **[[DP-XXXX]]** — {Titre court du ticket principal}
 > Done = {définition de done minimale déduite automatiquement}
+
+## ⏸ À renégocier
+
+- **[[DP-XXXX]]** — reporté N fois : faire · découper · rendre · abandonner — à trancher par écrit avec {qui}
 
 ## 📥 Contexte de la veille
 
@@ -165,7 +177,7 @@ tags: [tag-feature, tag-domaine]
 - Cycle : tag lu depuis `.claude/current-cycle.md` (ex: `#cycle4`)
 - Types : `#test-coverage` · `#bug` · `#refacto`
 
-**Sections à omettre si vides** : ne pas inclure "👀 En review" ou "✅ Done" si aucun ticket dans ce statut au matin.
+**Sections à omettre si vides** : ne pas inclure "⏸ À renégocier", "👀 En review" ou "✅ Done" si aucun ticket dans ce statut au matin.
 
 Si le fichier existe déjà (morning lancé deux fois dans la journée) :
 ne pas l'écraser, juste afficher le résumé.
@@ -175,6 +187,7 @@ ne pas l'écraser, juste afficher le résumé.
 Présenter clairement :
 - Ce qui était en cours hier (ou "Nouveau départ" si rien)
 - Les tickets prioritaires du jour (Linear)
+- Les tickets à renégocier (3 reports ou plus), en tête du résumé s'il y en a
 - L'emplacement du daily log
 
 ---
