@@ -25,6 +25,7 @@ backup ~/.zshrc   && symlink $DOTFILES/shell/zshrc   ~/.zshrc
 
 # Git
 backup ~/.gitconfig && symlink $DOTFILES/git/gitconfig ~/.gitconfig
+backup ~/.gitignore_global && symlink $DOTFILES/git/gitignore_global ~/.gitignore_global
 
 # Claude
 mkdir -p ~/.claude

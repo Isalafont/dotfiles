@@ -1,0 +1,4 @@
+# Fichiers ignorés dans tous les dépôts (core.excludesfile)
+
+# IDE JetBrains
+.idea/
