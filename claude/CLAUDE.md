@@ -64,7 +64,8 @@ Worktrees DataPass actuels : `dp-1392`, `dp-1682`, plus ceux temporaires sous `d
 - Plans en cours : `<projet>/.claude/plans/`
 - Canevas de ticket Linear : **DataPass → templates dans Linear** (équipe `DPP`, lus via
   `get_template`, cf. skill `create-linear-ticket`). **Side-projects perso →**
-  `~/.claude/templates/linear-ticket-side-projects.md`. Ne jamais croiser les deux.
+  skill `side-project-ticket` (un template par type : US, TS, Bug, Cadrage), sauf projet
+  qui versionne son propre skill de ticket. Ne jamais croiser les deux.
 - Vault structurel : `~/code/BetaGouv/note_datapass/{Journal,Documentation,Epics,Meta,Decisions}/`
 
 ## Skills routiniers

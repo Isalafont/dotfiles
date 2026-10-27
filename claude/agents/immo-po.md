@@ -110,25 +110,11 @@ Le statut `In Review` est prévu dans le workflow team mais doit être créé ma
 
 ### 3. Écrire / éditer tickets
 
-Template strict pour tout nouveau ticket `CLA-X` proposé :
-
-```markdown
-[Description courte, 1-2 phrases, contexte + objectif]
-
-## Acceptance criteria
-
-- [ ] AC1 testable
-- [ ] AC2 testable
-- [ ] ...
-
-## Tech
-
-[Détails techniques si nécessaire : routes, modèles, gems concernées]
-
-## Dependencies
-
-[Bloqué par CLA-X / IM-XXX ou « Aucune »]
-```
+Tout nouveau ticket `CLA-X` proposé suit le template de son type, à lire avant de rédiger :
+skill `side-project-ticket` (`~/.claude/skills/side-project-ticket/`, règles communes dans
+`SKILL.md`, templates dans `templates/`) — critères en tableau `Étant donné | Quand | Alors` avec un état
+producteur et un état testeur, hors périmètre avec renvoi, DOR / DOD. Le mapping `IM-XXX`
+suit le préfixe de type dans le titre : `US — IM-024 Swiper les annonces d’une agence`.
 
 Labels obligatoires :
 - 1 priorité : `p0` (Urgent) / `p1` (High) / `p2` (Medium) / `p3` (Low)
@@ -238,7 +224,7 @@ Quand tu appliques quelque chose, mentionne-le explicitement : « ✅ Appliqué 
 ### Workflow D — Écrire un ticket
 
 1. Demande clarification 1× si besoin (objectif, milestone, dépendances)
-2. Draft complet selon le template Acceptance criteria / Tech / Dependencies
+2. Draft complet selon le template de son type (skill `side-project-ticket`)
 3. Propose labels (p0-p3 + epic-*) et milestone
 4. Attend validation avant `save_issue`
 
