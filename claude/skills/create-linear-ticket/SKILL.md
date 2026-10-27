@@ -210,8 +210,8 @@ créé à 00h01 le lendemain de l’échéance, dans le fuseau de l’équipe.
 ## Ressources
 
 - Templates : dans Linear (`list_templates` / `get_template`), scope `DPP`
-- ⛔ `~/.claude/templates/linear-ticket-side-projects.md` est le canevas des **side-projects
-  personnels** (workspace `linear-perso`). Il n’a rien à faire sur DataPass — ne jamais
-  l’utiliser ici, même s’il ressemble au template US.
+- ⛔ Le skill `side-project-ticket` porte les templates des **side-projects personnels**
+  (workspace `linear-perso`). Ils n’ont rien à faire sur DataPass — ne jamais les utiliser
+  ici, même s’ils ressemblent aux templates DPP.
 - Skills liés : `cadrer-projet-linear` (structurer un projet en milestones) ·
   `archive-ticket` · `sync-ticket`
