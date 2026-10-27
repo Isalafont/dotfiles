@@ -4,6 +4,7 @@
 
 - Ne pas ajouter « Co-Authored-By: Claude » ni mentionner Claude dans les messages de commit,
   trailer « Claude-Session » compris.
+- Même règle pour les descriptions de PR : ni lien de session Claude, ni mention de Claude.
 - Pas de référence de ticket (DP-, DPP-, API-) dans le message de commit, ni dans le
   sujet ni dans le corps : le nom de branche fait déjà le lien côté Linear.
 - Messages de commit **courts** : une ligne à l’impératif, 72 caractères maximum.
